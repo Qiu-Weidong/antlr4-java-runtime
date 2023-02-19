@@ -10,7 +10,7 @@ import runtime.atn.ATN;
 
 /** A handy class for use with
  *
- *  options {contextSuperClass=org.antlr.v4.runtime.RuleContextWithAltNum;}
+ *  options {contextSuperClass=runtime.RuleContextWithAltNum;}
  *
  *  that provides a backing field / impl for the outer alternative number
  *  matched for an internal parse tree node.

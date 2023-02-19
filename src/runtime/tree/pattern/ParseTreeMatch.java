@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.tree.pattern;
+package runtime.tree.pattern;
 
 import runtime.misc.MultiMap;
 import runtime.tree.ParseTree;

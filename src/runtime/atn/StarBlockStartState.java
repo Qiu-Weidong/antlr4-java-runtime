@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** The block that begins a closure loop. */
 public final class StarBlockStartState extends BlockStartState {

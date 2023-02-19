@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.tree.xpath;
+package runtime.tree.xpath;
 
 import runtime.ParserRuleContext;
 import runtime.tree.ParseTree;

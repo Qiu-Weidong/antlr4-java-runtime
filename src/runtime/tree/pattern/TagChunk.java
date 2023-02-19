@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.tree.pattern;
+package runtime.tree.pattern;
 
 /**
  * Represents a placeholder tag in a tree pattern. A tag can have any of the

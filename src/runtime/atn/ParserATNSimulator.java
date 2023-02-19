@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 import runtime.BailErrorStrategy;
 import runtime.FailedPredicateException;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.antlr.v4.runtime.atn.ATNState.BLOCK_END;
+import static runtime.atn.ATNState.BLOCK_END;
 
 /**
  * The embodiment of the adaptive LL(*), ALL(*), parsing strategy.

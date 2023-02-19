@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 import runtime.Token;
 import runtime.misc.IntervalSet;

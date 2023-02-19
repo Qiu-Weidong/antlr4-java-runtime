@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** Start of {@code (A|B|...)+} loop. Technically a decision state, but
  *  we don't use for code generation; somebody might need it, so I'm defining

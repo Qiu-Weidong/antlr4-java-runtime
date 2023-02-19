@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** Decision state for {@code A+} and {@code (A|B)+}.  It has two transitions:
  *  one to the loop back to start of the block and one to exit.

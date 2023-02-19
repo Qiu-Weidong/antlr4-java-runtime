@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** The last node in the ATN for a rule, unless that rule is the start symbol.
  *  In that case, there is one transition to EOF. Later, we might encode

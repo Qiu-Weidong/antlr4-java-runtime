@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** The Tokens rule start state linking to each lexer rule start state */
 public final class TokensStartState extends DecisionState {

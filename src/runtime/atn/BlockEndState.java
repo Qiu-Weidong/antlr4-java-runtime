@@ -4,7 +4,7 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v4.runtime.atn;
+package runtime.atn;
 
 /** Terminal node of a simple {@code (a|b|c)} block. */
 public final class BlockEndState extends ATNState {

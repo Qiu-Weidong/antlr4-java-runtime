@@ -3,7 +3,7 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package org.antlr.v4.runtime.misc;
+package runtime.misc;
 
 /**
  * This interface provides an abstract concept of object equality independent of
