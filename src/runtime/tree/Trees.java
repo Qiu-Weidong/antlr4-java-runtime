@@ -161,13 +161,7 @@ public class Trees {
 		return nodes;
 	}
 
-	
-  @Deprecated
-	public static List<ParseTree> descendants(ParseTree t) {
-		return getDescendants(t);
-	}
 
-	
 	public static ParserRuleContext getRootOfSubtreeEnclosingRegion(ParseTree t,
 																	int startTokenIndex, // inclusive
 																	int stopTokenIndex)  // inclusive

@@ -46,13 +46,8 @@ public class BufferedTokenStream implements TokenStream {
 		// no resources to release
 	}
 
-	
-	@Deprecated
-    public void reset() {
-        seek(0);
-    }
 
-    @Override
+	@Override
     public void seek(int index) {
         lazyInit();
         p = adjustSeekIndex(index);
