@@ -43,8 +43,6 @@ public class ParserInterpreter extends Parser {
 	protected final DFA[] decisionToDFA; // not shared like it is for generated parsers
 	protected final PredictionContextCache sharedContextCache = new PredictionContextCache();
 
-	@Deprecated
-	protected final String[] tokenNames;
 	protected final String[] ruleNames;
 
 	private final Vocabulary vocabulary;
@@ -88,15 +86,10 @@ public class ParserInterpreter extends Parser {
 		super(input);
 		this.grammarFileName = grammarFileName;
 		this.atn = atn;
-		this.tokenNames = new String[atn.maxTokenType];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = vocabulary.getDisplayName(i);
-		}
 
 		this.ruleNames = ruleNames.toArray(new String[0]);
 		this.vocabulary = vocabulary;
 
-		// init decision DFA
 		int numberOfDecisions = atn.getNumberOfDecisions();
 		this.decisionToDFA = new DFA[numberOfDecisions];
 		for (int i = 0; i < numberOfDecisions; i++) {
@@ -104,7 +97,6 @@ public class ParserInterpreter extends Parser {
 			decisionToDFA[i] = new DFA(decisionState, i);
 		}
 
-		// get atn simulator that knows how to do predictions
 		setInterpreter(new ParserATNSimulator(this, atn,
 											  decisionToDFA,
 											  sharedContextCache));
@@ -120,12 +112,6 @@ public class ParserInterpreter extends Parser {
 	@Override
 	public ATN getATN() {
 		return atn;
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
 	}
 
 	@Override

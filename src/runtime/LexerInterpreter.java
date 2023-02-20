@@ -14,8 +14,6 @@ public class LexerInterpreter extends Lexer {
 	protected final String grammarFileName;
 	protected final ATN atn;
 
-	@Deprecated
-	protected final String[] tokenNames;
 	protected final String[] ruleNames;
 	protected final String[] channelNames;
 	protected final String[] modeNames;
@@ -36,10 +34,7 @@ public class LexerInterpreter extends Lexer {
 
 		this.grammarFileName = grammarFileName;
 		this.atn = atn;
-		this.tokenNames = new String[atn.maxTokenType];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = vocabulary.getDisplayName(i);
-		}
+
 
 		this.ruleNames = ruleNames.toArray(new String[0]);
 		this.channelNames = channelNames.toArray(new String[0]);
@@ -63,13 +58,7 @@ public class LexerInterpreter extends Lexer {
 		return grammarFileName;
 	}
 
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
+    @Override
 	public String[] getRuleNames() {
 		return ruleNames;
 	}

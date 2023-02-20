@@ -33,15 +33,13 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	private int _stateNumber = -1;
 
 
-	@Deprecated
-	public abstract String[] getTokenNames();
-
 	public abstract String[] getRuleNames();
 
 
 	@SuppressWarnings("deprecation")
 	public Vocabulary getVocabulary() {
-		return VocabularyImpl.fromTokenNames(getTokenNames());
+//		return VocabularyImpl.fromTokenNames(getTokenNames());
+		return null;
 	}
 
 

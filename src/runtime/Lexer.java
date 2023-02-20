@@ -83,17 +83,13 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		getInterpreter().reset();
 	}
 
-	/** Return a token from this source; i.e., match a token on the char
-	 *  stream.
-	 */
+
 	@Override
 	public Token nextToken() {
 		if (_input == null) {
 			throw new IllegalStateException("nextToken requires a non-null input stream.");
 		}
 
-		// Mark start location in char stream so unbuffered streams are
-		// guaranteed at least have text of current token
 		int tokenStartMarker = _input.mark();
 		try{
 			outer:
@@ -142,12 +138,6 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		}
 	}
 
-	/** Instruct the lexer to skip creating a token for current lexer rule
-	 *  and look for another token.  nextToken() knows to keep looking when
-	 *  a lexer rule finishes with token set to SKIP_TOKEN.  Recall that
-	 *  if token==null at end of any token rule, it creates one for you
-	 *  and emits it.
-	 */
 	public void skip() {
 		_type = SKIP;
 	}
@@ -203,22 +193,11 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return _input;
 	}
 
-	/** By default does not support multiple emits per nextToken invocation
-	 *  for efficiency reasons.  Subclass and override this method, nextToken,
-	 *  and getToken (to push tokens into a list and pull from that list
-	 *  rather than a single variable as this implementation does).
-	 */
 	public void emit(Token token) {
 		//System.err.println("emit "+token);
 		this._token = token;
 	}
 
-	/** The standard method called to automatically emit a token at the
-	 *  outermost lexical rule.  The token object should point into the
-	 *  char buffer start..stop.  If there is a text override in 'text',
-	 *  use that to set the token's text.  Override this method to emit
-	 *  custom Token objects or provide a new factory.
-	 */
 	public Token emit() {
 		Token t = _factory.create(_tokenFactorySourcePair, _type, _text, _channel, _tokenStartCharIndex, getCharIndex()-1,
 								  _tokenStartLine, _tokenStartCharPositionInLine);
@@ -253,14 +232,10 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		getInterpreter().setCharPositionInLine(charPositionInLine);
 	}
 
-	/** What is the index of the current character of lookahead? */
 	public int getCharIndex() {
 		return _input.index();
 	}
 
-	/** Return the text matched so far for the current token or any
-	 *  text override.
-	 */
 	public String getText() {
 		if ( _text !=null ) {
 			return _text;
@@ -268,14 +243,10 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return getInterpreter().getText(_input);
 	}
 
-	/** Set the complete text of this token; it wipes any previous
-	 *  changes to the text.
-	 */
 	public void setText(String text) {
 		this._text = text;
 	}
 
-	/** Override if emitting multiple tokens. */
 	public Token getToken() { return _token; }
 
 	public void setToken(Token _token) {
@@ -304,19 +275,6 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return null;
 	}
 
-	/** Used to print out token names like ID during debugging and
-	 *  error reporting.  The generated parsers implement a method
-	 *  that overrides this to point to their String[] tokenNames.
-	 */
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return null;
-	}
-
-	/** Return a list of all Token objects in input char stream.
-	 *  Forces load of all tokens. Does not include EOF token.
-	 */
 	public List<? extends Token> getAllTokens() {
 		List<Token> tokens = new ArrayList<Token>();
 		Token t = nextToken();

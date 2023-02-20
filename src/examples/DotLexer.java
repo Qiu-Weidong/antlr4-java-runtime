@@ -1,12 +1,9 @@
-// Generated from java-escape by ANTLR 4.11.1
+package examples;// Generated from java-escape by ANTLR 4.11.1
 import runtime.Lexer;
 import runtime.CharStream;
-import runtime.Token;
-import runtime.TokenStream;
 import runtime.*;
 import runtime.atn.*;
 import runtime.dfa.DFA;
-import runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class DotLexer extends Lexer {
@@ -55,27 +52,6 @@ public class DotLexer extends Lexer {
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
 
 	@Override
 
@@ -90,7 +66,7 @@ public class DotLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Dot.g4"; }
+	public String getGrammarFileName() { return "examples/Dot.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -107,6 +83,7 @@ public class DotLexer extends Lexer {
 	@Override
 	public ATN getATN() { return _ATN; }
 
+	// 貌似 ruby 也可以使用这种字符串
 	public static final String _serializedATN =
 		"\u0004\u0000\u0018\u00e6\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0002"+
 		"\u0001\u0007\u0001\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002"+
