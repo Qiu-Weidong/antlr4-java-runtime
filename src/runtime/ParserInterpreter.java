@@ -82,15 +82,6 @@ public class ParserInterpreter extends Parser {
 
 	protected InterpreterRuleContext rootContext;
 
-	/**
-	 * @deprecated Use {@link #ParserInterpreter(String, Vocabulary, Collection, ATN, TokenStream)} instead.
-	 */
-	@Deprecated
-	public ParserInterpreter(String grammarFileName, Collection<String> tokenNames,
-							 Collection<String> ruleNames, ATN atn, TokenStream input) {
-		this(grammarFileName, VocabularyImpl.fromTokenNames(tokenNames.toArray(new String[0])), ruleNames, atn, input);
-	}
-
 	public ParserInterpreter(String grammarFileName, Vocabulary vocabulary,
 							 Collection<String> ruleNames, ATN atn, TokenStream input)
 	{

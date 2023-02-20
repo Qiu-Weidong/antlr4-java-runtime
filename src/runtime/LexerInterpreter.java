@@ -8,7 +8,6 @@ import runtime.atn.LexerATNSimulator;
 import runtime.atn.PredictionContextCache;
 import runtime.dfa.DFA;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class LexerInterpreter extends Lexer {
@@ -27,16 +26,6 @@ public class LexerInterpreter extends Lexer {
 	protected final DFA[] _decisionToDFA;
 	protected final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
-
-	@Deprecated
-	public LexerInterpreter(String grammarFileName, Collection<String> tokenNames, Collection<String> ruleNames, Collection<String> modeNames, ATN atn, CharStream input) {
-		this(grammarFileName, VocabularyImpl.fromTokenNames(tokenNames.toArray(new String[0])), ruleNames, new ArrayList<String>(), modeNames, atn, input);
-	}
-
-	@Deprecated
-	public LexerInterpreter(String grammarFileName, Vocabulary vocabulary, Collection<String> ruleNames, Collection<String> modeNames, ATN atn, CharStream input) {
-		this(grammarFileName, vocabulary, ruleNames, new ArrayList<String>(), modeNames, atn, input);
-	}
 
 	public LexerInterpreter(String grammarFileName, Vocabulary vocabulary, Collection<String> ruleNames, Collection<String> channelNames, Collection<String> modeNames, ATN atn, CharStream input) {
 		super(input);

@@ -12,14 +12,6 @@ public final class RuleTransition extends Transition {
 	
 	public ATNState followState;
 
-	
-	@Deprecated
-	public RuleTransition(RuleStartState ruleStart,
-						  int ruleIndex,
-						  ATNState followState)
-	{
-		this(ruleStart, ruleIndex, 0, followState);
-	}
 
 	public RuleTransition(RuleStartState ruleStart,
 						  int ruleIndex,

@@ -2,7 +2,6 @@
 
 package runtime.atn;
 
-import runtime.ParserRuleContext;
 import runtime.RuleContext;
 import runtime.Token;
 import runtime.misc.IntervalSet;

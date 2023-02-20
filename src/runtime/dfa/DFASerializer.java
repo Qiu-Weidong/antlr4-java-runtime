@@ -3,7 +3,6 @@
 package runtime.dfa;
 
 import runtime.Vocabulary;
-import runtime.VocabularyImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +14,6 @@ public class DFASerializer {
 
 	private final Vocabulary vocabulary;
 
-	
-	@Deprecated
-	public DFASerializer(DFA dfa, String[] tokenNames) {
-		this(dfa, VocabularyImpl.fromTokenNames(tokenNames));
-	}
 
 	public DFASerializer(DFA dfa, Vocabulary vocabulary) {
 		this.dfa = dfa;

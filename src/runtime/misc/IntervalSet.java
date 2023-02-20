@@ -463,11 +463,6 @@ public class IntervalSet implements IntSet {
 		return buf.toString();
 	}
 
-	
-	@Deprecated
-	public String toString(String[] tokenNames) {
-		return toString(VocabularyImpl.fromTokenNames(tokenNames));
-	}
 
 	public String toString(Vocabulary vocabulary) {
 		StringBuilder buf = new StringBuilder();
@@ -500,12 +495,6 @@ public class IntervalSet implements IntSet {
 		}
         return buf.toString();
     }
-
-	
-	@Deprecated
-	protected String elementName(String[] tokenNames, int a) {
-		return elementName(VocabularyImpl.fromTokenNames(tokenNames), a);
-	}
 
 
 	protected String elementName(Vocabulary vocabulary, int a) {

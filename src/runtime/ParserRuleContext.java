@@ -152,36 +152,6 @@ public class ParserRuleContext extends RuleContext {
 		return addAnyChild(errorNode);
 	}
 
-	/** Add a child to this node based upon matchedToken. It
-	 *  creates a TerminalNodeImpl rather than using
-	 *  {@link Parser#createTerminalNode(ParserRuleContext, Token)}. I'm leaving this
-     *  in for compatibility but the parser doesn't use this anymore.
-	 */
-	@Deprecated
-	public TerminalNode addChild(Token matchedToken) {
-		TerminalNodeImpl t = new TerminalNodeImpl(matchedToken);
-		addAnyChild(t);
-		t.setParent(this);
-		return t;
-	}
-
-	/** Add a child to this node based upon badToken.  It
-	 *  creates a ErrorNodeImpl rather than using
-	 *  {@link Parser#createErrorNode(ParserRuleContext, Token)}. I'm leaving this
-	 *  in for compatibility but the parser doesn't use this anymore.
-	 */
-	@Deprecated
-	public ErrorNode addErrorNode(Token badToken) {
-		ErrorNodeImpl t = new ErrorNodeImpl(badToken);
-		addAnyChild(t);
-		t.setParent(this);
-		return t;
-	}
-
-//	public void trace(int s) {
-//		if ( states==null ) states = new ArrayList<Integer>();
-//		states.add(s);
-//	}
 
 	/** Used by enterOuterAlt to toss out a RuleContext previously added as
 	 *  we entered a rule. If we have # label, we will need to remove

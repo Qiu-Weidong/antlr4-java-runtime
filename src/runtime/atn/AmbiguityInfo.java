@@ -2,7 +2,6 @@
 
 package runtime.atn;
 
-import runtime.ANTLRErrorListener;
 import runtime.TokenStream;
 
 import java.util.BitSet;

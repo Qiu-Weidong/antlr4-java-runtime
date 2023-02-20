@@ -130,25 +130,6 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	}
 
 
-	@Deprecated
-	public String getTokenErrorDisplay(Token t) {
-		if ( t==null ) return "<no token>";
-		String s = t.getText();
-		if ( s==null ) {
-			if ( t.getType()==Token.EOF ) {
-				s = "<EOF>";
-			}
-			else {
-				s = "<"+t.getType()+">";
-			}
-		}
-		s = s.replace("\n","\\n");
-		s = s.replace("\r","\\r");
-		s = s.replace("\t","\\t");
-		return "'"+s+"'";
-	}
-
-
 	public void addErrorListener(ANTLRErrorListener listener) {
 		if (listener == null) {
 			throw new NullPointerException("listener cannot be null.");

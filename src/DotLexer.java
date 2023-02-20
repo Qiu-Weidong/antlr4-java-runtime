@@ -55,9 +55,6 @@ public class DotLexer extends Lexer {
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
 	@Deprecated
 	public static final String[] tokenNames;
 	static {

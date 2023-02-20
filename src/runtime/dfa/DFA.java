@@ -99,15 +99,6 @@ public class DFA {
 		}
 	}
 
-	
-	@Deprecated
-	public final void setPrecedenceDfa(boolean precedenceDfa) {
-		if (precedenceDfa != isPrecedenceDfa()) {
-			throw new UnsupportedOperationException("The precedenceDfa field cannot change after a DFA is constructed.");
-		}
-	}
-
-	
 
 	public List<DFAState> getStates() {
 		List<DFAState> result = new ArrayList<DFAState>(states.keySet());
@@ -124,13 +115,6 @@ public class DFA {
 	@Override
 	public String toString() { return toString(VocabularyImpl.EMPTY_VOCABULARY); }
 
-	
-	@Deprecated
-	public String toString(String[] tokenNames) {
-		if ( s0==null ) return "";
-		DFASerializer serializer = new DFASerializer(this,tokenNames);
-		return serializer.toString();
-	}
 
 	public String toString(Vocabulary vocabulary) {
 		if (s0 == null) {
