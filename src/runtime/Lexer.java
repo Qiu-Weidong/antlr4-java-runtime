@@ -173,7 +173,7 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return _factory;
 	}
 
-	/** Set the char stream and reset the lexer */
+	
 	@Override
 	public void setInputStream(IntStream input) {
 		this._input = null;
@@ -332,11 +332,7 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return "'"+s+"'";
 	}
 
-	/** Lexers can normally match any char in it's vocabulary after matching
-	 *  a token, so do the easy thing and just kill a character and hope
-	 *  it all works out.  You can instead use the rule invocation stack
-	 *  to do sophisticated error recovery if you are in a fragment rule.
-	 */
+	
 	public void recover(RecognitionException re) {
 		//System.out.println("consuming char "+(char)input.LA(1)+" during recovery");
 		//re.printStackTrace();

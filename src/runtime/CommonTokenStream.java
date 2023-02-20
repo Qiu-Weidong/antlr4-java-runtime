@@ -4,35 +4,15 @@ package runtime;
 
 
 public class CommonTokenStream extends BufferedTokenStream {
-	/**
-	 * Specifies the channel to use for filtering tokens.
-	 *
-	 * <p>
-	 * The default value is {@link Token#DEFAULT_CHANNEL}, which matches the
-	 * default channel assigned to tokens created by the lexer.</p>
-	 */
+	
     protected int channel = Token.DEFAULT_CHANNEL;
 
-	/**
-	 * Constructs a new {@link CommonTokenStream} using the specified token
-	 * source and the default token channel ({@link Token#DEFAULT_CHANNEL}).
-	 *
-	 * @param tokenSource The token source.
-	 */
+	
     public CommonTokenStream(TokenSource tokenSource) {
         super(tokenSource);
     }
 
-	/**
-	 * Constructs a new {@link CommonTokenStream} using the specified token
-	 * source and filtering tokens to the specified channel. Only tokens whose
-	 * {@link Token#getChannel} matches {@code channel} or have the
-	 * {@link Token#getType} equal to {@link Token#EOF} will be returned by the
-	 * token stream lookahead methods.
-	 *
-	 * @param tokenSource The token source.
-	 * @param channel The channel to use for filtering tokens.
-	 */
+	
     public CommonTokenStream(TokenSource tokenSource, int channel) {
         this(tokenSource);
         this.channel = channel;
@@ -79,7 +59,7 @@ public class CommonTokenStream extends BufferedTokenStream {
         return tokens.get(i);
     }
 
-	/** Count EOF just once. */
+	
 	public int getNumberOfOnChannelTokens() {
 		int n = 0;
 		fill();

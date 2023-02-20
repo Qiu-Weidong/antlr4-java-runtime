@@ -78,17 +78,8 @@ public class RuleContext implements RuleNode {
 
 	public int getAltNumber() { return ATN.INVALID_ALT_NUMBER; }
 
-	/** Set the outer alternative number for this context node. Default
-	 *  implementation does nothing to avoid backing field overhead for
-	 *  trees that don't need it.  Create
-     *  a subclass of ParserRuleContext with backing field and set
-     *  option contextSuperClass.
-	 *
-	 *  @since 4.5.3
-	 */
 	public void setAltNumber(int altNumber) { }
 
-	/** @since 4.7. {@see ParseTree#setParent} comment */
 	@Override
 	public void setParent(RuleContext parent) {
 		this.parent = parent;
@@ -107,18 +98,11 @@ public class RuleContext implements RuleNode {
 	@Override
 	public <T> T accept(ParseTreeVisitor<? extends T> visitor) { return visitor.visitChildren(this); }
 
-	/** Print out a whole tree, not just a node, in LISP format
-	 *  (root child1 .. childN). Print just a node if this is a leaf.
-	 *  We have to know the recognizer so we can get rule names.
-	 */
 	@Override
 	public String toStringTree(Parser recog) {
 		return Trees.toStringTree(this, recog);
 	}
 
-	/** Print out a whole tree, not just a node, in LISP format
-	 *  (root child1 .. childN). Print just a node if this is a leaf.
-	 */
 	public String toStringTree(List<String> ruleNames) {
 		return Trees.toStringTree(this, ruleNames);
 	}

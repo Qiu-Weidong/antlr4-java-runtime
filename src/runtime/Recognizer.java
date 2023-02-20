@@ -36,7 +36,6 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	public abstract String[] getRuleNames();
 
 
-	@SuppressWarnings("deprecation")
 	public Vocabulary getVocabulary() {
 //		return VocabularyImpl.fromTokenNames(getTokenNames());
 		return null;
@@ -170,17 +169,8 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 		return _stateNumber;
 	}
 
-	/** Indicate that the recognizer has changed internal state that is
-	 *  consistent with the ATN state passed in.  This way we always know
-	 *  where we are in the ATN as the parser goes along. The rule
-	 *  context objects form a stack that lets us see the stack of
-	 *  invoking rules. Combine this and we have complete ATN
-	 *  configuration information.
-	 */
 	public final void setState(int atnState) {
-//		System.err.println("setState "+atnState);
 		_stateNumber = atnState;
-//		if ( traceATNStates ) _ctx.trace(atnState);
 	}
 
 	public abstract IntStream getInputStream();
