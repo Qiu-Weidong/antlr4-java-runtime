@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 package runtime;
 
 import runtime.misc.Interval;
@@ -13,27 +9,19 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
 
-/**
- * Vacuum all input from a {@link Reader}/{@link InputStream} and then treat it
- * like a {@code char[]} buffer. Can also pass in a {@link String} or
- * {@code char[]} to use.
- *
- * <p>If you need encoding, pass in stream/reader with correct encoding.</p>
- *
- * @deprecated as of 4.7 Please use {@link CharStreams} interface.
- */
+
 @Deprecated
 public class ANTLRInputStream implements CharStream {
     public static final int READ_BUFFER_SIZE = 1024;
    	public static final int INITIAL_BUFFER_SIZE = 1024;
 
-	/** The data being scanned */
+
 	protected char[] data;
 
-	/** How many characters are actually in the buffer */
+
 	protected int n;
 
-	/** 0..n-1 index into string of next char */
+
 	protected int p=0;
 
 	/** What is name or source of this char stream? */

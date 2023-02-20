@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 package runtime;
 
 import runtime.atn.ATN;
@@ -34,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-/** This is all the parsing support code essentially; most of it is error recovery stuff. */
+
 public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 	public class TraceListener implements ParseTreeListener {
 		@Override
@@ -80,32 +76,14 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		}
 	}
 
-	/**
-	 * This field holds the deserialized {@link ATN} with bypass alternatives, created
-	 * lazily upon first demand. In 4.10 I changed from map<serializedATNstring, ATN>
-	 * since we only need one per parser object and also it complicates other targets
-	 * that don't use ATN strings.
-	 *
-	 * @see ATNDeserializationOptions#isGenerateRuleBypassTransitions()
-	 */
+
 	private ATN bypassAltsAtnCache;
 
-	/**
-	 * The error handling strategy for the parser. The default value is a new
-	 * instance of {@link DefaultErrorStrategy}.
-	 *
-	 * @see #getErrorHandler
-	 * @see #setErrorHandler
-	 */
+
 
 	protected ANTLRErrorStrategy _errHandler = new DefaultErrorStrategy();
 
-	/**
-	 * The input stream.
-	 *
-	 * @see #getInputStream
-	 * @see #setInputStream
-	 */
+
 	protected TokenStream _input;
 
 	protected final IntegerStack _precedenceStack;
@@ -114,53 +92,30 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		_precedenceStack.push(0);
 	}
 
-	/**
-	 * The {@link ParserRuleContext} object for the currently executing rule.
-	 * This is always non-null during the parsing process.
-	 */
+
 	protected ParserRuleContext _ctx;
 
-	/**
-	 * Specifies whether or not the parser should construct a parse tree during
-	 * the parsing process. The default value is {@code true}.
-	 *
-	 * @see #getBuildParseTree
-	 * @see #setBuildParseTree
-	 */
+
 	protected boolean _buildParseTrees = true;
 
 
-	/**
-	 * When {@link #setTrace}{@code (true)} is called, a reference to the
-	 * {@link TraceListener} is stored here so it can be easily removed in a
-	 * later call to {@link #setTrace}{@code (false)}. The listener itself is
-	 * implemented as a parser listener so this field is not directly used by
-	 * other parser methods.
-	 */
+
 	private TraceListener _tracer;
 
-	/**
-	 * The list of {@link ParseTreeListener} listeners registered to receive
-	 * events during the parse.
-	 *
-	 * @see #addParseListener
-	 */
+
 	protected List<ParseTreeListener> _parseListeners;
 
-	/**
-	 * The number of syntax errors reported during parsing. This value is
-	 * incremented each time {@link #notifyErrorListeners} is called.
-	 */
+
 	protected int _syntaxErrors;
 
-	/** Indicates parser has match()ed EOF token. See {@link #exitRule()}. */
+
 	protected boolean matchedEOF;
 
 	public Parser(TokenStream input) {
 		setInputStream(input);
 	}
 
-	/** reset the parser's state */
+
 	public void reset() {
 		if ( getInputStream()!=null ) getInputStream().seek(0);
 		_errHandler.reset(this);
@@ -176,25 +131,7 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		}
 	}
 
-	/**
-	 * Match current input symbol against {@code ttype}. If the symbol type
-	 * matches, {@link ANTLRErrorStrategy#reportMatch} and {@link #consume} are
-	 * called to complete the match process.
-	 *
-	 * <p>If the symbol type does not match,
-	 * {@link ANTLRErrorStrategy#recoverInline} is called on the current error
-	 * strategy to attempt recovery. If {@link #getBuildParseTree} is
-	 * {@code true} and the token index of the symbol returned by
-	 * {@link ANTLRErrorStrategy#recoverInline} is -1, the symbol is added to
-	 * the parse tree by calling {@link #createErrorNode(ParserRuleContext, Token)} then
-	 * {@link ParserRuleContext#addErrorNode(ErrorNode)}.</p>
-	 *
-	 * @param ttype the token type to match
-	 * @return the matched symbol
-	 * @throws RecognitionException if the current input symbol did not match
-	 * {@code ttype} and the error strategy could not recover from the
-	 * mismatched symbol
-	 */
+
 	public Token match(int ttype) throws RecognitionException {
 		Token t = getCurrentToken();
 		if ( t.getType()==ttype ) {

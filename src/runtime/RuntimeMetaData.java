@@ -1,83 +1,13 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
-/**
- * This class provides access to the current version of the ANTLR 4 runtime
- * library as compile-time and runtime constants, along with methods for
- * checking for matching version numbers and notifying listeners in the case
- * where a version mismatch is detected.
- *
- * <p>
- * The runtime version information is provided by {@link #VERSION} and
- * {@link #getRuntimeVersion()}. Detailed information about these values is
- * provided in the documentation for each member.</p>
- *
- * <p>
- * The runtime version check is implemented by {@link #checkVersion}. Detailed
- * information about incorporating this call into user code, as well as its use
- * in generated code, is provided in the documentation for the method.</p>
- *
- * <p>
- * Version strings x.y and x.y.z are considered "compatible" and no error
- * would be generated. Likewise, version strings x.y-SNAPSHOT and x.y.z are
- * considered "compatible" because the major and minor components x.y
- * are the same in each.</p>
- *
- * <p>
- * To trap any error messages issued by this code, use System.setErr()
- * in your main() startup code.
- * </p>
- *
- * @since 4.3
- */
+
 public class RuntimeMetaData {
-	/**
-	 * A compile-time constant containing the current version of the ANTLR 4
-	 * runtime library.
-	 *
-	 * <p>
-	 * This compile-time constant value allows generated parsers and other
-	 * libraries to include a literal reference to the version of the ANTLR 4
-	 * runtime library the code was compiled against. At each release, we
-	 * change this value.</p>
-	 *
-	 * <p>Version numbers are assumed to have the form
-	 *
-	 * <em>major</em>.<em>minor</em>.<em>patch</em>.<em>revision</em>-<em>suffix</em>,
-	 *
-	 * with the individual components defined as follows.</p>
-	 *
-	 * <ul>
-	 * <li><em>major</em> is a required non-negative integer, and is equal to
-	 * {@code 4} for ANTLR 4.</li>
-	 * <li><em>minor</em> is a required non-negative integer.</li>
-	 * <li><em>patch</em> is an optional non-negative integer. When
-	 * <em>patch</em> is omitted, the {@code .} (dot) appearing before it is
-	 * also omitted.</li>
-	 * <li><em>revision</em> is an optional non-negative integer, and may only
-	 * be included when <em>patch</em> is also included. When <em>revision</em>
-	 * is omitted, the {@code .} (dot) appearing before it is also omitted.</li>
-	 * <li><em>suffix</em> is an optional string. When <em>suffix</em> is
-	 * omitted, the {@code -} (hyphen-minus) appearing before it is also
-	 * omitted.</li>
-	 * </ul>
-	 */
+
 	public static final String VERSION = "4.11.1";
 
-	/**
-	 * Gets the currently executing version of the ANTLR 4 runtime library.
-	 *
-	 * <p>
-	 * This method provides runtime access to the {@link #VERSION} field, as
-	 * opposed to directly referencing the field as a compile-time constant.</p>
-	 *
-	 * @return The currently executing version of the ANTLR 4 library
-	 */
+
 
 	public static String getRuntimeVersion() {
 		return VERSION;

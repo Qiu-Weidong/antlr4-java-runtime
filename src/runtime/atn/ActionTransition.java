@@ -1,15 +1,11 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
 public final class ActionTransition extends Transition {
 	public final int ruleIndex;
 	public final int actionIndex;
-	public final boolean isCtxDependent; // e.g., $i ref in action
+	public final boolean isCtxDependent;
 
 	public ActionTransition(ATNState target, int ruleIndex) {
 		this(target, ruleIndex, -1, false);
@@ -29,7 +25,7 @@ public final class ActionTransition extends Transition {
 
 	@Override
 	public boolean isEpsilon() {
-		return true; // we are to be ignored by analysis 'cept for predicates
+		return true;
 	}
 
 	@Override

@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -13,57 +9,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * This implementation of {@link TokenStream} loads tokens from a
- * {@link TokenSource} on-demand, and places the tokens in a buffer to provide
- * access to any previous token by index.
- *
- * <p>
- * This token stream ignores the value of {@link Token#getChannel}. If your
- * parser requires the token stream filter tokens to only those on a particular
- * channel, such as {@link Token#DEFAULT_CHANNEL} or
- * {@link Token#HIDDEN_CHANNEL}, use a filtering token stream such a
- * {@link CommonTokenStream}.</p>
- */
+
 public class BufferedTokenStream implements TokenStream {
-	/**
-	 * The {@link TokenSource} from which tokens for this stream are fetched.
-	 */
+	
     protected TokenSource tokenSource;
 
-	/**
-	 * A collection of all tokens fetched from the token source. The list is
-	 * considered a complete view of the input once {@link #fetchedEOF} is set
-	 * to {@code true}.
-	 */
+	
     protected List<Token> tokens = new ArrayList<Token>(100);
 
-	/**
-	 * The index into {@link #tokens} of the current token (next token to
-	 * {@link #consume}). {@link #tokens}{@code [}{@link #p}{@code ]} should be
-	 * {@link #LT LT(1)}.
-	 *
-	 * <p>This field is set to -1 when the stream is first constructed or when
-	 * {@link #setTokenSource} is called, indicating that the first token has
-	 * not yet been fetched from the token source. For additional information,
-	 * see the documentation of {@link IntStream} for a description of
-	 * Initializing Methods.</p>
-	 */
+	
     protected int p = -1;
 
-	/**
-	 * Indicates whether the {@link Token#EOF} token has been fetched from
-	 * {@link #tokenSource} and added to {@link #tokens}. This field improves
-	 * performance for the following cases:
-	 *
-	 * <ul>
-	 * <li>{@link #consume}: The lookahead check in {@link #consume} to prevent
-	 * consuming the EOF symbol is optimized by checking the values of
-	 * {@link #fetchedEOF} and {@link #p} instead of calling {@link #LA}.</li>
-	 * <li>{@link #fetch}: The check to prevent adding multiple EOF symbols into
-	 * {@link #tokens} is trivial with this field.</li>
-	 * <ul>
-	 */
+	
 	protected boolean fetchedEOF;
 
     public BufferedTokenStream(TokenSource tokenSource) {
@@ -89,13 +46,7 @@ public class BufferedTokenStream implements TokenStream {
 		// no resources to release
 	}
 
-	/**
-	 * This method resets the token stream back to the first token in the
-	 * buffer. It is equivalent to calling {@link #seek}{@code (0)}.
-	 *
-	 * @see #setTokenSource(TokenSource)
-	 * @deprecated Use {@code seek(0)} instead.
-	 */
+	
 	@Deprecated
     public void reset() {
         seek(0);
@@ -138,12 +89,7 @@ public class BufferedTokenStream implements TokenStream {
 		}
     }
 
-    /** Make sure index {@code i} in tokens has a token.
-	 *
-	 * @return {@code true} if a token is located at index {@code i}, otherwise
-	 *    {@code false}.
-	 * @see #get(int i)
-	 */
+    
     protected boolean sync(int i) {
 		assert i >= 0;
         int n = i - tokens.size() + 1; // how many more elements we need?
@@ -156,10 +102,7 @@ public class BufferedTokenStream implements TokenStream {
 		return true;
     }
 
-    /** Add {@code n} elements to buffer.
-	 *
-	 * @return The actual number of elements added to the buffer.
-	 */
+    
     protected int fetch(int n) {
 		if (fetchedEOF) {
 			return 0;
@@ -188,7 +131,7 @@ public class BufferedTokenStream implements TokenStream {
         return tokens.get(i);
     }
 
-	/** Get all tokens from start..stop inclusively */
+	
 	public List<Token> get(int start, int stop) {
 		if ( start<0 || stop<0 ) return null;
 		lazyInit();
@@ -227,19 +170,7 @@ public class BufferedTokenStream implements TokenStream {
         return tokens.get(i);
     }
 
-	/**
-	 * Allowed derived classes to modify the behavior of operations which change
-	 * the current stream position by adjusting the target token index of a seek
-	 * operation. The default implementation simply returns {@code i}. If an
-	 * exception is thrown in this method, the current stream index should not be
-	 * changed.
-	 *
-	 * <p>For example, {@link CommonTokenStream} overrides this method to ensure that
-	 * the seek target is always an on-channel token.</p>
-	 *
-	 * @param i The target token index.
-	 * @return The adjusted target token index.
-	 */
+	
 	protected int adjustSeekIndex(int i) {
 		return i;
 	}
@@ -255,7 +186,7 @@ public class BufferedTokenStream implements TokenStream {
 		p = adjustSeekIndex(0);
 	}
 
-    /** Reset this token stream by setting its token source. */
+    
     public void setTokenSource(TokenSource tokenSource) {
         this.tokenSource = tokenSource;
         tokens.clear();
@@ -269,10 +200,7 @@ public class BufferedTokenStream implements TokenStream {
         return getTokens(start, stop, null);
     }
 
-    /** Given a start and stop index, return a List of all tokens in
-     *  the token type BitSet.  Return null if no tokens were found.  This
-     *  method looks at both on and off channel tokens.
-     */
+    
     public List<Token> getTokens(int start, int stop, Set<Integer> types) {
         lazyInit();
 		if ( start<0 || stop>=tokens.size() ||
@@ -303,12 +231,7 @@ public class BufferedTokenStream implements TokenStream {
 		return getTokens(start,stop, s);
     }
 
-	/**
-	 * Given a starting index, return the index of the next token on channel.
-	 * Return {@code i} if {@code tokens[i]} is on channel. Return the index of
-	 * the EOF token if there are no tokens on channel between {@code i} and
-	 * EOF.
-	 */
+	
 	protected int nextTokenOnChannel(int i, int channel) {
 		sync(i);
 		if (i >= size()) {
@@ -329,16 +252,7 @@ public class BufferedTokenStream implements TokenStream {
 		return i;
 	}
 
-	/**
-	 * Given a starting index, return the index of the previous token on
-	 * channel. Return {@code i} if {@code tokens[i]} is on channel. Return -1
-	 * if there are no tokens on channel between {@code i} and 0.
-	 *
-	 * <p>
-	 * If {@code i} specifies an index at or after the EOF token, the EOF token
-	 * index is returned. This is due to the fact that the EOF token is treated
-	 * as though it were on every channel.</p>
-	 */
+	
 	protected int previousTokenOnChannel(int i, int channel) {
 		sync(i);
 		if (i >= size()) {
@@ -358,10 +272,7 @@ public class BufferedTokenStream implements TokenStream {
 		return i;
 	}
 
-	/** Collect all tokens on specified channel to the right of
-	 *  the current token up until we see a token on DEFAULT_TOKEN_CHANNEL or
-	 *  EOF. If channel is -1, find any non default channel token.
-	 */
+	
 	public List<Token> getHiddenTokensToRight(int tokenIndex, int channel) {
 		lazyInit();
 		if ( tokenIndex<0 || tokenIndex>=tokens.size() ) {
@@ -379,18 +290,12 @@ public class BufferedTokenStream implements TokenStream {
 		return filterForChannel(from, to, channel);
 	}
 
-	/** Collect all hidden tokens (any off-default channel) to the right of
-	 *  the current token up until we see a token on DEFAULT_TOKEN_CHANNEL
-	 *  or EOF.
-	 */
+	
 	public List<Token> getHiddenTokensToRight(int tokenIndex) {
 		return getHiddenTokensToRight(tokenIndex, -1);
 	}
 
-	/** Collect all tokens on specified channel to the left of
-	 *  the current token up until we see a token on DEFAULT_TOKEN_CHANNEL.
-	 *  If channel is -1, find any non default channel token.
-	 */
+	
 	public List<Token> getHiddenTokensToLeft(int tokenIndex, int channel) {
 		lazyInit();
 		if ( tokenIndex<0 || tokenIndex>=tokens.size() ) {
@@ -412,9 +317,7 @@ public class BufferedTokenStream implements TokenStream {
 		return filterForChannel(from, to, channel);
 	}
 
-	/** Collect all hidden tokens (any off-default channel) to the left of
-	 *  the current token up until we see a token on DEFAULT_TOKEN_CHANNEL.
-	 */
+	
 	public List<Token> getHiddenTokensToLeft(int tokenIndex) {
 		return getHiddenTokensToLeft(tokenIndex, -1);
 	}
@@ -437,7 +340,7 @@ public class BufferedTokenStream implements TokenStream {
 	@Override
     public String getSourceName() {	return tokenSource.getSourceName();	}
 
-	/** Get the text of all tokens in this buffer. */
+	
 
 	@Override
 	public String getText() {
@@ -477,7 +380,7 @@ public class BufferedTokenStream implements TokenStream {
 		return "";
     }
 
-    /** Get all tokens from lexer until EOF */
+    
     public void fill() {
         lazyInit();
 		final int blockSize = 1000;

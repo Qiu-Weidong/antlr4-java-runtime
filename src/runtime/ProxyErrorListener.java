@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 package runtime;
 
 import runtime.atn.ATNConfigSet;
@@ -11,13 +7,7 @@ import runtime.dfa.DFA;
 import java.util.BitSet;
 import java.util.Collection;
 
-/**
- * This implementation of {@link ANTLRErrorListener} dispatches all calls to a
- * collection of delegate listeners. This reduces the effort required to support multiple
- * listeners.
- *
- * @author Sam Harwell
- */
+
 public class ProxyErrorListener implements ANTLRErrorListener {
 	private final Collection<? extends ANTLRErrorListener> delegates;
 

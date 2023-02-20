@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -17,13 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-/** Deserialize ATNs for JavaTarget; it's complicated by the fact that java requires
- *  that we serialize the list of integers as 16 bit characters in a string. Other
- *  targets will have an array of ints generated and can simply decode the ints
- *  back into an ATN.
- *
- * @author Sam Harwell
- */
+
 public class ATNDeserializer {
 	public static final int SERIALIZED_VERSION;
 	static {
@@ -60,15 +50,15 @@ public class ATNDeserializer {
 		int maxTokenType = data[p++];
 		ATN atn = new ATN(grammarType, maxTokenType);
 
-		//
-		// STATES
-		//
+
+
+
 		List<Pair<LoopEndState, Integer>> loopBackStateNumbers = new ArrayList<Pair<LoopEndState, Integer>>();
 		List<Pair<BlockStartState, Integer>> endStateNumbers = new ArrayList<Pair<BlockStartState, Integer>>();
 		int nstates = data[p++];
 		for (int i=0; i<nstates; i++) {
 			int stype = data[p++];
-			// ignore bad type of states
+
 			if ( stype==ATNState.INVALID_TYPE ) {
 				atn.addState(null);
 				continue;
@@ -76,7 +66,7 @@ public class ATNDeserializer {
 
 			int ruleIndex = data[p++];
 			ATNState s = stateFactory(stype, ruleIndex);
-			if ( stype == ATNState.LOOP_END ) { // special case
+			if ( stype == ATNState.LOOP_END ) {
 				int loopBackStateNumber = data[p++];
 				loopBackStateNumbers.add(new Pair<LoopEndState, Integer>((LoopEndState)s, loopBackStateNumber));
 			}
@@ -87,7 +77,7 @@ public class ATNDeserializer {
 			atn.addState(s);
 		}
 
-		// delay the assignment of loop back and end states until we know all the state instances have been initialized
+
 		for (Pair<LoopEndState, Integer> pair : loopBackStateNumbers) {
 			pair.a.loopBackState = atn.states.get(pair.b);
 		}
@@ -108,9 +98,9 @@ public class ATNDeserializer {
 			((RuleStartState)atn.states.get(stateNumber)).isLeftRecursiveRule = true;
 		}
 
-		//
-		// RULES
-		//
+
+
+
 		int nrules = data[p++];
 		if ( atn.grammarType == ATNType.LEXER ) {
 			atn.ruleToTokenType = new int[nrules];
@@ -138,24 +128,24 @@ public class ATNDeserializer {
 			atn.ruleToStartState[state.ruleIndex].stopState = stopState;
 		}
 
-		//
-		// MODES
-		//
+
+
+
 		int nmodes = data[p++];
 		for (int i=0; i<nmodes; i++) {
 			int s = data[p++];
 			atn.modeToStartState.add((TokensStartState)atn.states.get(s));
 		}
 
-		//
-		// SETS
-		//
+
+
+
 		List<IntervalSet> sets = new ArrayList<IntervalSet>();
 		p = deserializeSets(data, p, sets);
 
-		//
-		// EDGES
-		//
+
+
+
 		int nedges = data[p++];
 		for (int i=0; i<nedges; i++) {
 			int src = data[p];
@@ -165,16 +155,16 @@ public class ATNDeserializer {
 			int arg2 = data[p+4];
 			int arg3 = data[p+5];
 			Transition trans = edgeFactory(atn, ttype, src, trg, arg1, arg2, arg3, sets);
-//			System.out.println("EDGE "+trans.getClass().getSimpleName()+" "+
-//							   src+"->"+trg+
-//					   " "+Transition.serializationNames[ttype]+
-//					   " "+arg1+","+arg2+","+arg3);
+
+
+
+
 			ATNState srcState = atn.states.get(src);
 			srcState.addTransition(trans);
 			p += 6;
 		}
 
-		// edges for rule stop states can be derived, so they aren't serialized
+
 		for (ATNState state : atn.states) {
 			for (int i = 0; i < state.getNumberOfTransitions(); i++) {
 				Transition t = state.transition(i);
@@ -197,12 +187,12 @@ public class ATNDeserializer {
 
 		for (ATNState state : atn.states) {
 			if (state instanceof BlockStartState) {
-				// we need to know the end state to set its start state
+
 				if (((BlockStartState)state).endState == null) {
 					throw new IllegalStateException();
 				}
 
-				// block end states can only be associated to a single block start state
+
 				if (((BlockStartState)state).endState.startState != null) {
 					throw new IllegalStateException();
 				}
@@ -230,9 +220,9 @@ public class ATNDeserializer {
 			}
 		}
 
-		//
-		// DECISIONS
-		//
+
+
+
 		int ndecisions = data[p++];
 		for (int i=1; i<=ndecisions; i++) {
 			int s = data[p++];
@@ -241,9 +231,9 @@ public class ATNDeserializer {
 			decState.decision = i-1;
 		}
 
-		//
-		// LEXER ACTIONS
-		//
+
+
+
 		if (atn.grammarType == ATNType.LEXER) {
 			atn.lexerActions = new LexerAction[data[p++]];
 			for (int i = 0; i < atn.lexerActions.length; i++) {
@@ -286,7 +276,7 @@ public class ATNDeserializer {
 				ATNState endState;
 				Transition excludeTransition = null;
 				if (atn.ruleToStartState[i].isLeftRecursiveRule) {
-					// wrap from the beginning of the rule to the StarLoopEntryState
+
 					endState = null;
 					for (ATNState state : atn.states) {
 						if (state.ruleIndex != i) {
@@ -318,7 +308,7 @@ public class ATNDeserializer {
 					endState = atn.ruleToStopState[i];
 				}
 
-				// all non-excluded transitions that currently target end state need to target blockEnd instead
+
 				for (ATNState state : atn.states) {
 					for (Transition transition : state.transitions) {
 						if (transition == excludeTransition) {
@@ -331,13 +321,13 @@ public class ATNDeserializer {
 					}
 				}
 
-				// all transitions leaving the rule start state need to leave blockStart instead
+
 				while (atn.ruleToStartState[i].getNumberOfTransitions() > 0) {
 					Transition transition = atn.ruleToStartState[i].removeTransition(atn.ruleToStartState[i].getNumberOfTransitions() - 1);
 					bypassStart.addTransition(transition);
 				}
 
-				// link the new states
+
 				atn.ruleToStartState[i].addTransition(new EpsilonTransition(bypassStart));
 				bypassStop.addTransition(new EpsilonTransition(endState));
 
@@ -348,7 +338,7 @@ public class ATNDeserializer {
 			}
 
 			if (deserializationOptions.isVerifyATN()) {
-				// reverify after modification
+
 				verifyATN(atn);
 			}
 		}
@@ -378,23 +368,14 @@ public class ATNDeserializer {
 		return p;
 	}
 
-	/**
-	 * Analyze the {@link StarLoopEntryState} states in the specified ATN to set
-	 * the {@link StarLoopEntryState#isPrecedenceDecision} field to the
-	 * correct value.
-	 *
-	 * @param atn The ATN.
-	 */
+	
 	protected void markPrecedenceDecisions(ATN atn) {
 		for (ATNState state : atn.states) {
 			if (!(state instanceof StarLoopEntryState)) {
 				continue;
 			}
 
-			/* We analyze the ATN to determine if this ATN decision state is the
-			 * decision for the closure block that determines whether a
-			 * precedence rule should continue or complete.
-			 */
+			
 			if (atn.ruleToStartState[state.ruleIndex].isLeftRecursiveRule) {
 				ATNState maybeLoopEndState = state.transition(state.getNumberOfTransitions() - 1).target;
 				if (maybeLoopEndState instanceof LoopEndState) {
@@ -407,7 +388,7 @@ public class ATNDeserializer {
 	}
 
 	protected void verifyATN(ATN atn) {
-		// verify assumptions
+
 		for (ATNState state : atn.states) {
 			if (state == null) {
 				continue;
@@ -587,40 +568,25 @@ public class ATNDeserializer {
 		}
 	}
 
-	/** Given a list of integers representing a serialized ATN, encode values too large to fit into 15 bits
-	 *  as two 16bit values. We use the high bit (0x8000_0000) to indicate values requiring two 16 bit words.
-	 *  If the high bit is set, we grab the next value and combine them to get a 31-bit value. The possible
-	 *  input int values are [-1,0x7FFF_FFFF].
-	 *
-	 * 		| compression/encoding                         | uint16 count | type            |
-	 * 		| -------------------------------------------- | ------------ | --------------- |
-	 * 		| 0xxxxxxx xxxxxxxx                            | 1            | uint (15 bit)   |
-	 * 		| 1xxxxxxx xxxxxxxx yyyyyyyy yyyyyyyy          | 2            | uint (16+ bits) |
-	 * 		| 11111111 11111111 11111111 11111111          | 2            | int value -1    |
-	 *
-	 * 	This is only used (other than for testing) by {@link org.antlr.v4.codegen.model.SerializedJavaATN}
-	 * 	to encode ints as char values for the java target, but it is convenient to combine it with the
-	 * 	#decodeIntsEncodedAs16BitWords that follows as they are a pair (I did not want to introduce a new class
-	 * 	into the runtime). Used only for Java Target.
-	 */
+	
 	public static IntegerList encodeIntsWith16BitWords(IntegerList data) {
 		IntegerList data16 = new IntegerList((int)(data.size()*1.5));
 		for (int i = 0; i < data.size(); i++) {
 			int v = data.get(i);
-			if ( v==-1 ) { // use two max uint16 for -1
+			if ( v==-1 ) {
 				data16.add(0xFFFF);
 				data16.add(0xFFFF);
 			}
 			else if (v <= 0x7FFF) {
 				data16.add(v);
 			}
-			else { // v > 0x7FFF
-				if ( v>=0x7FFF_FFFF ) { // too big to fit in 15 bits + 16 bits? (+1 would be 8000_0000 which is bad encoding)
+			else {
+				if ( v>=0x7FFF_FFFF ) {
 					throw new UnsupportedOperationException("Serialized ATN data element["+i+"] = "+v+" doesn't fit in 31 bits");
 				}
-				v = v & 0x7FFF_FFFF;					// strip high bit (sentinel) if set
-				data16.add((v >> 16) | 0x8000);   // store high 15-bit word first and set high bit to say word follows
-				data16.add((v & 0xFFFF)); 		// then store lower 16-bit word
+				v = v & 0x7FFF_FFFF;
+				data16.add((v >> 16) | 0x8000);
+				data16.add((v & 0xFFFF));
 			}
 		}
 		return data16;
@@ -630,25 +596,23 @@ public class ATNDeserializer {
 		return decodeIntsEncodedAs16BitWords(data16, false);
 	}
 
-	/** Convert a list of chars (16 uint) that represent a serialized and compressed list of ints for an ATN.
-	 *  This method pairs with {@link #encodeIntsWith16BitWords(IntegerList)} above. Used only for Java Target.
-	 */
+	
 	public static int[] decodeIntsEncodedAs16BitWords(char[] data16, boolean trimToSize) {
-		// will be strictly smaller but we waste bit of space to avoid copying during initialization of parsers
+
 		int[] data = new int[data16.length];
 		int i = 0;
 		int i2 = 0;
 		while ( i < data16.length ) {
 			char v = data16[i++];
-			if ( (v & 0x8000) == 0 ) { // hi bit not set? Implies 1-word value
-				data[i2++] = v; // 7 bit int
+			if ( (v & 0x8000) == 0 ) {
+				data[i2++] = v;
 			}
-			else { // hi bit set. Implies 2-word value
+			else {
 				char vnext = data16[i++];
-				if ( v==0xFFFF && vnext == 0xFFFF ) { // is it -1?
+				if ( v==0xFFFF && vnext == 0xFFFF ) {
 					data[i2++] = -1;
 				}
-				else { // 31-bit int
+				else {
 					data[i2++] = (v & 0x7FFF) << 16 | (vnext & 0xFFFF);
 				}
 			}

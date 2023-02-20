@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -19,7 +15,7 @@ public class SingletonPredictionContext extends PredictionContext {
 
 	public static SingletonPredictionContext create(PredictionContext parent, int returnState) {
 		if ( returnState == EMPTY_RETURN_STATE && parent == null ) {
-			// someone can pass in the bits of an array ctx that mean $
+
 			return EmptyPredictionContext.Instance;
 		}
 		return new SingletonPredictionContext(parent, returnState);
@@ -52,7 +48,7 @@ public class SingletonPredictionContext extends PredictionContext {
 		}
 
 		if ( this.hashCode() != o.hashCode() ) {
-			return false; // can't be same if hash is different
+			return false;
 		}
 
 		SingletonPredictionContext s = (SingletonPredictionContext)o;

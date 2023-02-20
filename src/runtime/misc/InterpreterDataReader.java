@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.misc;
 
@@ -18,40 +14,18 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-// A class to read plain text interpreter data produced by ANTLR.
+
 public class InterpreterDataReader {
 
 	public static class InterpreterData {
 	  ATN atn;
 	  Vocabulary vocabulary;
 	  List<String> ruleNames;
-	  List<String> channels; // Only valid for lexer grammars.
-	  List<String> modes; // ditto
+	  List<String> channels;
+	  List<String> modes;
 	};
 
-	/**
-	 * The structure of the data file is very simple. Everything is line based with empty lines
-	 * separating the different parts. For lexers the layout is:
-	 * token literal names:
-	 * ...
-	 *
-	 * token symbolic names:
-	 * ...
-	 *
-	 * rule names:
-	 * ...
-	 *
-	 * channel names:
-	 * ...
-	 *
-	 * mode names:
-	 * ...
-	 *
-	 * atn:
-	 * <a single line with comma separated int values> enclosed in a pair of squared brackets.
-	 *
-	 * Data for a parser does not contain channel and mode names.
-	 */
+	
 	public static InterpreterData parseFile(String fileName) {
 		InterpreterData result = new InterpreterData();
 		result.ruleNames = new ArrayList<String>();
@@ -91,7 +65,7 @@ public class InterpreterDataReader {
 		    }
 
 			line = br.readLine();
-			if ( line.equals("channel names:") ) { // Additional lexer data.
+			if ( line.equals("channel names:") ) {
 				result.channels = new ArrayList<String>();
 			    while ((line = br.readLine()) != null) {
 			       if ( line.isEmpty() )
@@ -117,7 +91,7 @@ public class InterpreterDataReader {
 			String[] elements = line.substring(1,line.length()-1).split(",");
 	  		int[] serializedATN = new int[elements.length];
 
-			for (int i = 0; i < elements.length; ++i) { // ignore [...] on ends
+			for (int i = 0; i < elements.length; ++i) {
 				serializedATN[i] = Integer.parseInt(elements[i].trim());
 			}
 
@@ -125,7 +99,7 @@ public class InterpreterDataReader {
 		  	result.atn = deserializer.deserialize(serializedATN);
 		}
 		catch (java.io.IOException e) {
-			// We just swallow the error and return empty objects instead.
+
 		}
 
 		return result;

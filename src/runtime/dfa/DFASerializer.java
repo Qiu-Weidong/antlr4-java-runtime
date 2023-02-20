@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.dfa;
 
@@ -12,16 +8,14 @@ import runtime.VocabularyImpl;
 import java.util.Arrays;
 import java.util.List;
 
-/** A DFA walker that knows how to dump them to serialized strings. */
+
 public class DFASerializer {
 
 	private final DFA dfa;
 
 	private final Vocabulary vocabulary;
 
-	/**
-	 * @deprecated Use {@link #DFASerializer(DFA, Vocabulary)} instead.
-	 */
+	
 	@Deprecated
 	public DFASerializer(DFA dfa, String[] tokenNames) {
 		this(dfa, VocabularyImpl.fromTokenNames(tokenNames));
@@ -52,7 +46,7 @@ public class DFASerializer {
 
 		String output = buf.toString();
 		if ( output.length()==0 ) return null;
-		//return Utils.sortLinesInString(output);
+
 		return output;
 	}
 

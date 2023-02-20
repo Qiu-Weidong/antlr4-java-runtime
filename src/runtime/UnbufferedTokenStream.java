@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -13,55 +9,25 @@ import java.util.Arrays;
 public class UnbufferedTokenStream<T extends Token> implements TokenStream {
 	protected TokenSource tokenSource;
 
-	/**
-	 * A moving window buffer of the data being scanned. While there's a marker,
-	 * we keep adding to buffer. Otherwise, {@link #consume consume()} resets so
-	 * we start filling at index 0 again.
-	 */
+	
 	protected Token[] tokens;
 
-	/**
-	 * The number of tokens currently in {@link #tokens tokens}.
-	 *
-	 * <p>This is not the buffer capacity, that's {@code tokens.length}.</p>
-	 */
+	
 	protected int n;
 
-	/**
-	 * 0..n-1 index into {@link #tokens tokens} of next token.
-	 *
-	 * <p>The {@code LT(1)} token is {@code tokens[p]}. If {@code p == n}, we are
-	 * out of buffered tokens.</p>
-	 */
+	
 	protected int p=0;
 
-	/**
-	 * Count up with {@link #mark mark()} and down with
-	 * {@link #release release()}. When we {@code release()} the last mark,
-	 * {@code numMarkers} reaches 0 and we reset the buffer. Copy
-	 * {@code tokens[p]..tokens[n-1]} to {@code tokens[0]..tokens[(n-1)-p]}.
-	 */
+	
 	protected int numMarkers = 0;
 
-	/**
-	 * This is the {@code LT(-1)} token for the current position.
-	 */
+	
 	protected Token lastToken;
 
-	/**
-	 * When {@code numMarkers > 0}, this is the {@code LT(-1)} token for the
-	 * first token in {@link #tokens}. Otherwise, this is {@code null}.
-	 */
+	
 	protected Token lastTokenBufferStart;
 
-	/**
-	 * Absolute token index. It's the index of the token about to be read via
-	 * {@code LT(1)}. Goes from 0 to the number of tokens in the entire stream,
-	 * although the stream size is unknown before the end is reached.
-	 *
-	 * <p>This value is used to set the token indexes if the stream provides tokens
-	 * that implement {@link WritableToken}.</p>
-	 */
+	
 	protected int currentTokenIndex = 0;
 
 	public UnbufferedTokenStream(TokenSource tokenSource) {
@@ -154,10 +120,7 @@ public class UnbufferedTokenStream<T extends Token> implements TokenStream {
 		sync(1);
 	}
 
-	/** Make sure we have 'need' elements from current position {@link #p p}. Last valid
-	 *  {@code p} index is {@code tokens.length-1}.  {@code p+need-1} is the tokens index 'need' elements
-	 *  ahead.  If we need 1 element, {@code (p+1-1)==p} must be less than {@code tokens.length}.
-	 */
+	
 	protected void sync(int want) {
 		int need = (p+want-1) - n + 1; // how many more elements we need?
 		if ( need > 0 ) {
@@ -165,11 +128,7 @@ public class UnbufferedTokenStream<T extends Token> implements TokenStream {
 		}
 	}
 
-	/**
-	 * Add {@code n} elements to the buffer. Returns the number of tokens
-	 * actually added to the buffer. If the return value is less than {@code n},
-	 * then EOF was reached before {@code n} tokens could be added.
-	 */
+	
 	protected int fill(int n) {
 		for (int i=0; i<n; i++) {
 			if (this.n > 0 && tokens[this.n-1].getType() == Token.EOF) {
@@ -195,13 +154,7 @@ public class UnbufferedTokenStream<T extends Token> implements TokenStream {
 		tokens[n++] = t;
 	}
 
-	/**
-	 * Return a marker that we can release later.
-	 *
-	 * <p>The specific marker value used for this class allows for some level of
-	 * protection against misuse where {@code seek()} is called on a mark or
-	 * {@code release()} is called in the wrong order.</p>
-	 */
+	
 	@Override
 	public int mark() {
 		if (numMarkers == 0) {

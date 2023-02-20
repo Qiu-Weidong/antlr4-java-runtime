@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.misc;
 
@@ -13,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** A limited map (many unsupported operations) that lets me use
- *  varying hashCode/equals.
- */
+
 public class FlexibleHashMap<K,V> implements Map<K, V> {
-	public static final int INITAL_CAPACITY = 16; // must be power of 2
+	public static final int INITAL_CAPACITY = 16;
 	public static final int INITAL_BUCKET_CAPACITY = 8;
 	public static final double LOAD_FACTOR = 0.75;
 
@@ -38,12 +32,12 @@ public class FlexibleHashMap<K,V> implements Map<K, V> {
 
 	protected LinkedList<Entry<K, V>>[] buckets;
 
-	/** How many elements in set */
+	
 	protected int n = 0;
 
-	protected int currentPrime = 1; // jump by 4 primes each expand or whatever
+	protected int currentPrime = 1;
 
-	/** when to expand */
+	
 	protected int threshold;
 	protected final int initialCapacity;
 	protected final int initialBucketCapacity;
@@ -76,7 +70,7 @@ public class FlexibleHashMap<K,V> implements Map<K, V> {
 
 	protected int getBucket(K key) {
 		int hash = comparator.hashCode(key);
-		int b = hash & (buckets.length-1); // assumes len is power of 2
+		int b = hash & (buckets.length-1);
 		return b;
 	}
 
@@ -87,7 +81,7 @@ public class FlexibleHashMap<K,V> implements Map<K, V> {
 		if ( key==null ) return null;
 		int b = getBucket(typedKey);
 		LinkedList<Entry<K, V>> bucket = buckets[b];
-		if ( bucket==null ) return null; // no bucket
+		if ( bucket==null ) return null;
 		for (Entry<K, V> e : bucket) {
 			if ( comparator.equals(e.key, typedKey) ) {
 				return e.value;
@@ -113,7 +107,7 @@ public class FlexibleHashMap<K,V> implements Map<K, V> {
 				return prev;
 			}
 		}
-		// not there
+
 		bucket.add(new Entry<K, V>(key, value));
 		n++;
 		return null;
@@ -188,8 +182,8 @@ public class FlexibleHashMap<K,V> implements Map<K, V> {
 		LinkedList<Entry<K, V>>[] newTable = createEntryListArray(newCapacity);
 		buckets = newTable;
 		threshold = (int)(newCapacity * LOAD_FACTOR);
-//		System.out.println("new size="+newCapacity+", thres="+threshold);
-		// rehash all existing entries
+
+
 		int oldSize = size();
 		for (LinkedList<Entry<K, V>> bucket : old) {
 			if ( bucket==null ) continue;

@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -22,66 +18,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/** This class represents the primary interface for creating {@link CharStream}s
- *  from a variety of sources as of 4.7.  The motivation was to support
- *  Unicode code points > U+FFFF.  {@link ANTLRInputStream} and
- *  {@link ANTLRFileStream} are now deprecated in favor of the streams created
- *  by this interface.
- *
- *  DEPRECATED: {@code new ANTLRFileStream("myinputfile")}
- *  NEW:        {@code CharStreams.fromFileName("myinputfile")}
- *
- *  WARNING: If you use both the deprecated and the new streams, you will see
- *  a nontrivial performance degradation. This speed hit is because the
- *  {@link Lexer}'s internal code goes from a monomorphic to megamorphic
- *  dynamic dispatch to get characters from the input stream. Java's
- *  on-the-fly compiler (JIT) is unable to perform the same optimizations
- *  so stick with either the old or the new streams, if performance is
- *  a primary concern. See the extreme debugging and spelunking
- *  needed to identify this issue in our timing rig:
- *
- *      https://github.com/antlr/antlr4/pull/1781
- *
- *  The ANTLR character streams still buffer all the input when you create
- *  the stream, as they have done for ~20 years. If you need unbuffered
- *  access, please note that it becomes challenging to create
- *  parse trees. The parse tree has to point to tokens which will either
- *  point into a stale location in an unbuffered stream or you have to copy
- *  the characters out of the buffer into the token. That defeats the purpose
- *  of unbuffered input. Per the ANTLR book, unbuffered streams are primarily
- *  useful for processing infinite streams *during the parse.*
- *
- *  The new streams also use 8-bit buffers when possible so this new
- *  interface supports character streams that use half as much memory
- *  as the old {@link ANTLRFileStream}, which assumed 16-bit characters.
- *
- *  A big shout out to Ben Hamilton (github bhamiltoncx) for his superhuman
- *  efforts across all targets to get true Unicode 3.1 support for U+10FFFF.
- *
- *  @since 4.7
- */
+
 public final class CharStreams {
 	private static final int DEFAULT_BUFFER_SIZE = 4096;
 
-	// Utility class; do not construct.
+
 	private CharStreams() { }
 
-	/**
-	 * Creates a {@link CharStream} given a path to a UTF-8
-	 * encoded file on disk.
-	 *
-	 * Reads the entire contents of the file into the result before returning.
-	 */
+
 	public static CharStream fromPath(Path path) throws IOException {
 		return fromPath(path, StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a path to a file on disk and the
-	 * charset of the bytes contained in the file.
-	 *
-	 * Reads the entire contents of the file into the result before returning.
-	 */
+
 	public static CharStream fromPath(Path path, Charset charset) throws IOException {
 		long size = Files.size(path);
 		try (ReadableByteChannel channel = Files.newByteChannel(path)) {
@@ -95,46 +44,23 @@ public final class CharStreams {
 		}
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a string containing a
-	 * path to a UTF-8 file on disk.
-	 *
-	 * Reads the entire contents of the file into the result before returning.
-	 */
+
 	public static CharStream fromFileName(String fileName) throws IOException {
 		return fromPath(Paths.get(fileName), StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a string containing a
-	 * path to a file on disk and the charset of the bytes
-	 * contained in the file.
-	 *
-	 * Reads the entire contents of the file into the result before returning.
-	 */
+
 	public static CharStream fromFileName(String fileName, Charset charset) throws IOException {
 		return fromPath(Paths.get(fileName), charset);
 	}
 
 
-	/**
-	 * Creates a {@link CharStream} given an opened {@link InputStream}
-	 * containing UTF-8 bytes.
-	 *
-	 * Reads the entire contents of the {@code InputStream} into
-	 * the result before returning, then closes the {@code InputStream}.
-	 */
+
 	public static CharStream fromStream(InputStream is) throws IOException {
 		return fromStream(is, StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given an opened {@link InputStream} and the
-	 * charset of the bytes contained in the stream.
-	 *
-	 * Reads the entire contents of the {@code InputStream} into
-	 * the result before returning, then closes the {@code InputStream}.
-	 */
+
 	public static CharStream fromStream(InputStream is, Charset charset) throws IOException {
 		return fromStream(is, charset, -1);
 	}
@@ -151,24 +77,12 @@ public final class CharStreams {
 		}
 	}
 
-	/**
-	 * Creates a {@link CharStream} given an opened {@link ReadableByteChannel}
-	 * containing UTF-8 bytes.
-	 *
-	 * Reads the entire contents of the {@code channel} into
-	 * the result before returning, then closes the {@code channel}.
-	 */
+
 	public static CharStream fromChannel(ReadableByteChannel channel) throws IOException {
 		return fromChannel(channel, StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given an opened {@link ReadableByteChannel} and the
-	 * charset of the bytes contained in the channel.
-	 *
-	 * Reads the entire contents of the {@code channel} into
-	 * the result before returning, then closes the {@code channel}.
-	 */
+
 	public static CharStream fromChannel(ReadableByteChannel channel, Charset charset) throws IOException {
 		return fromChannel(
 			channel,
@@ -177,18 +91,12 @@ public final class CharStreams {
 			IntStream.UNKNOWN_SOURCE_NAME);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a {@link Reader}. Closes
-	 * the reader before returning.
-	 */
+
 	public static CodePointCharStream fromReader(Reader r) throws IOException {
 		return fromReader(r, IntStream.UNKNOWN_SOURCE_NAME);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a {@link Reader} and its
-	 * source name. Closes the reader before returning.
-	 */
+
 	public static CodePointCharStream fromReader(Reader r, String sourceName) throws IOException {
 		try {
 			CodePointBuffer.Builder codePointBufferBuilder = CodePointBuffer.builder(DEFAULT_BUFFER_SIZE);
@@ -205,23 +113,18 @@ public final class CharStreams {
 		}
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a {@link String}.
-	 */
+
 	public static CodePointCharStream fromString(String s) {
 		return fromString(s, IntStream.UNKNOWN_SOURCE_NAME);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given a {@link String} and the {@code sourceName}
-	 * from which it came.
-	 */
+
 	public static CodePointCharStream fromString(String s, String sourceName) {
-		// Initial guess assumes no code points > U+FFFF: one code
-		// point for each code unit in the string
+
+
 		CodePointBuffer.Builder codePointBufferBuilder = CodePointBuffer.builder(s.length());
-		// TODO: CharBuffer.wrap(String) rightfully returns a read-only buffer
-		// which doesn't expose its array, so we make a copy.
+
+
 		CharBuffer cb = CharBuffer.allocate(s.length());
 		cb.put(s);
 		cb.flip();
@@ -229,13 +132,7 @@ public final class CharStreams {
 		return CodePointCharStream.fromBuffer(codePointBufferBuilder.build(), sourceName);
 	}
 
-	/**
-	 * Creates a {@link CharStream} given an opened {@link ReadableByteChannel}
-	 * containing UTF-8 bytes.
-	 *
-	 * Reads the entire contents of the {@code channel} into
-	 * the result before returning, then closes the {@code channel}.
-	 */
+
 	public static CodePointCharStream fromChannel(
 		ReadableByteChannel channel,
 		int bufferSize,
@@ -261,7 +158,7 @@ public final class CharStreams {
 			if (inputSize == -1) {
 				inputSize = bufferSize;
 			} else if (inputSize > Integer.MAX_VALUE) {
-				// ByteBuffer et al don't support long sizes
+
 				throw new IOException(String.format("inputSize %d larger than max %d", inputSize, Integer.MAX_VALUE));
 			}
 			CodePointBuffer.Builder codePointBufferBuilder = CodePointBuffer.builder((int) inputSize);
@@ -287,8 +184,8 @@ public final class CharStreams {
 				utf8BytesIn.compact();
 				utf16CodeUnitsOut.compact();
 			}
-			// Handle any bytes at the end of the file which need to
-			// be represented as errors or substitution characters.
+
+
 			CoderResult flushResult = decoder.flush(utf16CodeUnitsOut);
 			if (flushResult.isError() && decodingErrorAction.equals(CodingErrorAction.REPORT)) {
 				flushResult.throwException();

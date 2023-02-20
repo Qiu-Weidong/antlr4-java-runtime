@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 package runtime;
 
 import runtime.atn.ATNState;
@@ -11,11 +7,7 @@ import runtime.atn.PredicateTransition;
 
 import java.util.Locale;
 
-/** A semantic predicate failed during validation.  Validation of predicates
- *  occurs when normally parsing the alternative just like matching a token.
- *  Disambiguating predicate evaluation occurs when we test a predicate during
- *  prediction.
- */
+
 public class FailedPredicateException extends RecognitionException {
 	private final int ruleIndex;
 	private final int predicateIndex;

@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -10,12 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.IntBuffer;
 
-/**
- * Wrapper for {@link ByteBuffer} / {@link CharBuffer} / {@link IntBuffer}.
- *
- * Because Java lacks generics on primitive types, these three types
- * do not share an interface, so we have to write one manually.
- */
+
 public class CodePointBuffer {
 	public enum Type {
 			BYTE,
@@ -219,7 +210,7 @@ public class CodePointBuffer {
 			if (utf16In.hasArray()) {
 				appendArray(utf16In);
 			} else {
-				// TODO
+
 				throw new UnsupportedOperationException("TODO");
 			}
 		}
@@ -321,7 +312,7 @@ public class CodePointBuffer {
 						outOffset++;
 						prevHighSurrogate = -1;
 					} else {
-						// Dangling high surrogate
+
 						outInt[outOffset] = prevHighSurrogate;
 						outOffset++;
 						if (Character.isHighSurrogate(c)) {
@@ -341,7 +332,7 @@ public class CodePointBuffer {
 			}
 
 			if (prevHighSurrogate != -1) {
-				// Dangling high surrogate
+
 				outInt[outOffset] = prevHighSurrogate & 0xFFFF;
 				outOffset++;
 			}
@@ -352,7 +343,7 @@ public class CodePointBuffer {
 
 		private void byteToCharBuffer(int toAppend) {
 			byteBuffer.flip();
-			// CharBuffers hold twice as much per unit as ByteBuffers, so start with half the capacity.
+
 			CharBuffer newBuffer = CharBuffer.allocate(Math.max(byteBuffer.remaining() + toAppend, byteBuffer.capacity() / 2));
 			while (byteBuffer.hasRemaining()) {
 				newBuffer.put((char) (byteBuffer.get() & 0xFF));
@@ -364,7 +355,7 @@ public class CodePointBuffer {
 
 		private void byteToIntBuffer(int toAppend) {
 			byteBuffer.flip();
-			// IntBuffers hold four times as much per unit as ByteBuffers, so start with one quarter the capacity.
+
 			IntBuffer newBuffer = IntBuffer.allocate(Math.max(byteBuffer.remaining() + toAppend, byteBuffer.capacity() / 4));
 			while (byteBuffer.hasRemaining()) {
 				newBuffer.put(byteBuffer.get() & 0xFF);
@@ -376,7 +367,7 @@ public class CodePointBuffer {
 
 		private void charToIntBuffer(int toAppend) {
 			charBuffer.flip();
-			// IntBuffers hold two times as much per unit as ByteBuffers, so start with one half the capacity.
+
 			IntBuffer newBuffer = IntBuffer.allocate(Math.max(charBuffer.remaining() + toAppend, charBuffer.capacity() / 2));
 			while (charBuffer.hasRemaining()) {
 				newBuffer.put(charBuffer.get() & 0xFFFF);

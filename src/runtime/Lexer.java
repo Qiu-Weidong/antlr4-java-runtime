@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 package runtime;
 
 import runtime.atn.LexerATNSimulator;
@@ -14,11 +10,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 
-/** A lexer is recognizer that draws input symbols from a character stream.
- *  lexer grammars result in a subclass of this object. A Lexer object
- *  uses simplified match() and error recovery mechanisms in the interest
- *  of speed.
- */
+
 public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 	implements TokenSource
 {
@@ -34,48 +26,34 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 	public CharStream _input;
 	protected Pair<TokenSource, CharStream> _tokenFactorySourcePair;
 
-	/** How to create token objects */
+
 	protected TokenFactory<?> _factory = CommonTokenFactory.DEFAULT;
 
-	/** The goal of all lexer rules/methods is to create a token object.
-	 *  This is an instance variable as multiple rules may collaborate to
-	 *  create a single token.  nextToken will return this object after
-	 *  matching lexer rule(s).  If you subclass to allow multiple token
-	 *  emissions, then set this to the last token to be matched or
-	 *  something nonnull so that the auto token emit mechanism will not
-	 *  emit another token.
-	 */
+
 	public Token _token;
 
-	/** What character index in the stream did the current token start at?
-	 *  Needed, for example, to get the text for current token.  Set at
-	 *  the start of nextToken.
-	 */
+
 	public int _tokenStartCharIndex = -1;
 
-	/** The line on which the first character of the token resides */
+
 	public int _tokenStartLine;
 
-	/** The character position of first character within the line */
+
 	public int _tokenStartCharPositionInLine;
 
-	/** Once we see EOF on char stream, next token will be EOF.
-	 *  If you have DONE : EOF ; then you see DONE EOF.
-	 */
+
 	public boolean _hitEOF;
 
-	/** The channel number for the current token */
+
 	public int _channel;
 
-	/** The token type for the current token */
+
 	public int _type;
 
 	public final IntegerStack _modeStack = new IntegerStack();
 	public int _mode = Lexer.DEFAULT_MODE;
 
-	/** You can set the text for the current token to override what is in
-	 *  the input char buffer.  Use setText() or can set this instance var.
-	 */
+
 	public String _text;
 
 	public Lexer() { }

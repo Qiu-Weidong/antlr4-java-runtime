@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.misc;
 
@@ -12,9 +8,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-/** {@link Set} implementation with closed hashing (open addressing). */
+
 public class Array2DHashSet<T> implements Set<T> {
-	public static final int INITAL_CAPACITY = 16; // must be power of 2
+	public static final int INITAL_CAPACITY = 16;
 	public static final int INITAL_BUCKET_CAPACITY = 8;
 	public static final double LOAD_FACTOR = 0.75;
 
@@ -23,12 +19,12 @@ public class Array2DHashSet<T> implements Set<T> {
 
 	protected T[][] buckets;
 
-	/** How many elements in set */
+	
 	protected int n = 0;
 
-	protected int currentPrime = 1; // jump by 4 primes each expand or whatever
+	protected int currentPrime = 1;
 
-	/** when to expand */
+	
 	protected int threshold;
 	protected final int initialCapacity;
 	protected final int initialBucketCapacity;
@@ -53,11 +49,7 @@ public class Array2DHashSet<T> implements Set<T> {
 		this.threshold = (int)Math.floor(initialCapacity * LOAD_FACTOR);
 	}
 
-	/**
-	 * Add {@code o} to set if not there; return existing value if already
-	 * there. This method performs the same operation as {@link #add} aside from
-	 * the return value.
-	 */
+	
 	public final T getOrAdd(T o) {
 		if ( n > threshold ) expand();
 		return getOrAddImpl(o);
@@ -67,7 +59,7 @@ public class Array2DHashSet<T> implements Set<T> {
 		int b = getBucket(o);
 		T[] bucket = buckets[b];
 
-		// NEW BUCKET
+
 		if ( bucket==null ) {
 			bucket = createBucket(initialBucketCapacity);
 			bucket[0] = o;
@@ -76,22 +68,22 @@ public class Array2DHashSet<T> implements Set<T> {
 			return o;
 		}
 
-		// LOOK FOR IT IN BUCKET
+
 		for (int i=0; i<bucket.length; i++) {
 			T existing = bucket[i];
-			if ( existing==null ) { // empty slot; not there, add.
+			if ( existing==null ) {
 				bucket[i] = o;
 				n++;
 				return o;
 			}
-			if ( comparator.equals(existing, o) ) return existing; // found existing, quit
+			if ( comparator.equals(existing, o) ) return existing;
 		}
 
-		// FULL BUCKET, expand and add to end
+
 		int oldLength = bucket.length;
 		bucket = Arrays.copyOf(bucket, bucket.length * 2);
 		buckets[b] = bucket;
-		bucket[oldLength] = o; // add to end
+		bucket[oldLength] = o;
 		n++;
 		return o;
 	}
@@ -100,9 +92,9 @@ public class Array2DHashSet<T> implements Set<T> {
 		if ( o==null ) return o;
 		int b = getBucket(o);
 		T[] bucket = buckets[b];
-		if ( bucket==null ) return null; // no bucket
+		if ( bucket==null ) return null;
 		for (T e : bucket) {
-			if ( e==null ) return null; // empty slot; not there
+			if ( e==null ) return null;
 			if ( comparator.equals(e, o) ) return e;
 		}
 		return null;
@@ -110,7 +102,7 @@ public class Array2DHashSet<T> implements Set<T> {
 
 	protected final int getBucket(T o) {
 		int hash = comparator.hashCode(o);
-		int b = hash & (buckets.length-1); // assumes len is power of 2
+		int b = hash & (buckets.length-1);
 		return b;
 	}
 
@@ -147,8 +139,8 @@ public class Array2DHashSet<T> implements Set<T> {
 		int[] newBucketLengths = new int[newTable.length];
 		buckets = newTable;
 		threshold = (int)(newCapacity * LOAD_FACTOR);
-//		System.out.println("new size="+newCapacity+", thres="+threshold);
-		// rehash all existing entries
+
+
 		int oldSize = size();
 		for (T[] bucket : old) {
 			if ( bucket==null ) {
@@ -164,14 +156,14 @@ public class Array2DHashSet<T> implements Set<T> {
 				int bucketLength = newBucketLengths[b];
 				T[] newBucket;
 				if (bucketLength == 0) {
-					// new bucket
+
 					newBucket = createBucket(initialBucketCapacity);
 					newTable[b] = newBucket;
 				}
 				else {
 					newBucket = newTable[b];
 					if (bucketLength == newBucket.length) {
-						// expand
+
 						newBucket = Arrays.copyOf(newBucket, newBucket.length * 2);
 						newTable[b] = newBucket;
 					}
@@ -257,7 +249,7 @@ public class Array2DHashSet<T> implements Set<T> {
 					break;
 				}
 
-				@SuppressWarnings("unchecked") // array store will check this
+				@SuppressWarnings("unchecked")
 				U targetElement = (U)o;
 				a[i++] = targetElement;
 			}
@@ -278,19 +270,19 @@ public class Array2DHashSet<T> implements Set<T> {
 		int b = getBucket(obj);
 		T[] bucket = buckets[b];
 		if ( bucket==null ) {
-			// no bucket
+
 			return false;
 		}
 
 		for (int i=0; i<bucket.length; i++) {
 			T e = bucket[i];
 			if ( e==null ) {
-				// empty slot; not there
+
 				return false;
 			}
 
-			if ( comparator.equals(e, obj) ) {          // found it
-				// shift all elements to the right down one
+			if ( comparator.equals(e, obj) ) {
+
 				System.arraycopy(bucket, i+1, bucket, i, bucket.length-i-1);
 				bucket[bucket.length - 1] = null;
 				n--;
@@ -347,11 +339,11 @@ public class Array2DHashSet<T> implements Set<T> {
 				}
 
 				if (!c.contains(bucket[i])) {
-					// removed
+
 					continue;
 				}
 
-				// keep
+
 				if (i != j) {
 					bucket[j] = bucket[i];
 				}
@@ -430,41 +422,19 @@ public class Array2DHashSet<T> implements Set<T> {
 		return buf.toString();
 	}
 
-	/**
-	 * Return {@code o} as an instance of the element type {@code T}. If
-	 * {@code o} is non-null but known to not be an instance of {@code T}, this
-	 * method returns {@code null}. The base implementation does not perform any
-	 * type checks; override this method to provide strong type checks for the
-	 * {@link #contains} and {@link #remove} methods to ensure the arguments to
-	 * the {@link EqualityComparator} for the set always have the expected
-	 * types.
-	 *
-	 * @param o the object to try and cast to the element type of the set
-	 * @return {@code o} if it could be an instance of {@code T}, otherwise
-	 * {@code null}.
-	 */
+	
 	@SuppressWarnings("unchecked")
 	protected T asElementType(Object o) {
 		return (T)o;
 	}
 
-	/**
-	 * Return an array of {@code T[]} with length {@code capacity}.
-	 *
-	 * @param capacity the length of the array to return
-	 * @return the newly constructed array
-	 */
+	
 	@SuppressWarnings("unchecked")
 	protected T[][] createBuckets(int capacity) {
 		return (T[][])new Object[capacity][];
 	}
 
-	/**
-	 * Return an array of {@code T} with length {@code capacity}.
-	 *
-	 * @param capacity the length of the array to return
-	 * @return the newly constructed array
-	 */
+	
 	@SuppressWarnings("unchecked")
 	protected T[] createBucket(int capacity) {
 		return (T[])new Object[capacity];

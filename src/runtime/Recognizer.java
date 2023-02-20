@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -36,33 +32,19 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 
 	private int _stateNumber = -1;
 
-	/** Used to print out token names like ID during debugging and
-	 *  error reporting.  The generated parsers implement a method
-	 *  that overrides this to point to their String[] tokenNames.
-	 *
-	 * @deprecated Use {@link #getVocabulary()} instead.
-	 */
+
 	@Deprecated
 	public abstract String[] getTokenNames();
 
 	public abstract String[] getRuleNames();
 
-	/**
-	 * Get the vocabulary used by the recognizer.
-	 *
-	 * @return A {@link Vocabulary} instance providing information about the
-	 * vocabulary used by the grammar.
-	 */
+
 	@SuppressWarnings("deprecation")
 	public Vocabulary getVocabulary() {
 		return VocabularyImpl.fromTokenNames(getTokenNames());
 	}
 
-	/**
-	 * Get a map from token names to token types.
-	 *
-	 * <p>Used for XPath and tree pattern compilation.</p>
-	 */
+
 	public Map<String, Integer> getTokenTypeMap() {
 		Vocabulary vocabulary = getVocabulary();
 		synchronized (tokenTypeMapCache) {
@@ -90,11 +72,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 		}
 	}
 
-	/**
-	 * Get a map from rule names to rule indexes.
-	 *
-	 * <p>Used for XPath and tree pattern compilation.</p>
-	 */
+
 	public Map<String, Integer> getRuleIndexMap() {
 		String[] ruleNames = getRuleNames();
 		if (ruleNames == null) {
@@ -118,77 +96,40 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 		return Token.INVALID_TYPE;
 	}
 
-	/**
-	 * If this recognizer was generated, it will have a serialized ATN
-	 * representation of the grammar.
-	 *
-	 * <p>For interpreters, we don't know their serialized ATN despite having
-	 * created the interpreter from it.</p>
-	 */
+
 	public String getSerializedATN() {
 		throw new UnsupportedOperationException("there is no serialized ATN");
 	}
 
-	/** For debugging and other purposes, might want the grammar name.
-	 *  Have ANTLR generate an implementation for this method.
-	 */
+
 	public abstract String getGrammarFileName();
 
-	/**
-	 * Get the {@link ATN} used by the recognizer for prediction.
-	 *
-	 * @return The {@link ATN} used by the recognizer for prediction.
-	 */
+
 	public abstract ATN getATN();
 
-	/**
-	 * Get the ATN interpreter used by the recognizer for prediction.
-	 *
-	 * @return The ATN interpreter used by the recognizer for prediction.
-	 */
+
 	public ATNInterpreter getInterpreter() {
 		return _interp;
 	}
 
-	/** If profiling during the parse/lex, this will return DecisionInfo records
-	 *  for each decision in recognizer in a ParseInfo object.
-	 *
-	 * @since 4.3
-	 */
+
 	public ParseInfo getParseInfo() {
 		return null;
 	}
 
-	/**
-	 * Set the ATN interpreter used by the recognizer for prediction.
-	 *
-	 * @param interpreter The ATN interpreter used by the recognizer for
-	 * prediction.
-	 */
+
 	public void setInterpreter(ATNInterpreter interpreter) {
 		_interp = interpreter;
 	}
 
-	/** What is the error header, normally line/character position information? */
+
 	public String getErrorHeader(RecognitionException e) {
 		int line = e.getOffendingToken().getLine();
 		int charPositionInLine = e.getOffendingToken().getCharPositionInLine();
 		return "line "+line+":"+charPositionInLine;
 	}
 
-	/** How should a token be displayed in an error message? The default
-	 *  is to display just the text, but during development you might
-	 *  want to have a lot of information spit out.  Override in that case
-	 *  to use t.toString() (which, for CommonToken, dumps everything about
-	 *  the token). This is better than forcing you to override a method in
-	 *  your token objects because you don't have to go modify your lexer
-	 *  so that it creates a new Java type.
-	 *
-	 * @deprecated This method is not called by the ANTLR 4 Runtime. Specific
-	 * implementations of {@link ANTLRErrorStrategy} may provide a similar
-	 * feature when necessary. For example, see
-	 * {@link DefaultErrorStrategy#getTokenErrorDisplay}.
-	 */
+
 	@Deprecated
 	public String getTokenErrorDisplay(Token t) {
 		if ( t==null ) return "<no token>";
@@ -207,9 +148,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 		return "'"+s+"'";
 	}
 
-	/**
-	 * @exception NullPointerException if {@code listener} is {@code null}.
-	 */
+
 	public void addErrorListener(ANTLRErrorListener listener) {
 		if (listener == null) {
 			throw new NullPointerException("listener cannot be null.");
@@ -235,8 +174,8 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 		return new ProxyErrorListener(getErrorListeners());
 	}
 
-	// subclass needs to override these if there are sempreds or actions
-	// that the ATN interp needs to execute
+
+
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int actionIndex) {
 		return true;
 	}

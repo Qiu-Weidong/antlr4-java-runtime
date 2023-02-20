@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -20,56 +16,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-/** A tree structure used to record the semantic context in which
- *  an ATN configuration is valid.  It's either a single predicate,
- *  a conjunction {@code p1&&p2}, or a sum of products {@code p1||p2}.
- *
- *  <p>I have scoped the {@link AND}, {@link OR}, and {@link Predicate} subclasses of
- *  {@link SemanticContext} within the scope of this outer class.</p>
- */
+
 public abstract class SemanticContext {
-	/**
-	 * For context independent predicates, we evaluate them without a local
-	 * context (i.e., null context). That way, we can evaluate them without
-	 * having to create proper rule-specific context during prediction (as
-	 * opposed to the parser, which creates them naturally). In a practical
-	 * sense, this avoids a cast exception from RuleContext to myruleContext.
-	 *
-	 * <p>For context dependent predicates, we must pass in a local context so that
-	 * references such as $arg evaluate properly as _localctx.arg. We only
-	 * capture context dependent predicates in the context in which we begin
-	 * prediction, so we passed in the outer context here in case of context
-	 * dependent predicate evaluation.</p>
-	 */
+	
     public abstract boolean eval(Recognizer<?,?> parser, RuleContext parserCallStack);
 
-	/**
-	 * Evaluate the precedence predicates for the context and reduce the result.
-	 *
-	 * @param parser The parser instance.
-	 * @param parserCallStack
-	 * @return The simplified semantic context after precedence predicates are
-	 * evaluated, which will be one of the following values.
-	 * <ul>
-	 * <li>{@link Empty#Instance}: if the predicate simplifies to {@code true} after
-	 * precedence predicates are evaluated.</li>
-	 * <li>{@code null}: if the predicate simplifies to {@code false} after
-	 * precedence predicates are evaluated.</li>
-	 * <li>{@code this}: if the semantic context is not changed as a result of
-	 * precedence predicate evaluation.</li>
-	 * <li>A non-{@code null} {@link SemanticContext}: the new simplified
-	 * semantic context after precedence predicates are evaluated.</li>
-	 * </ul>
-	 */
+	
 	public SemanticContext evalPrecedence(Recognizer<?,?> parser, RuleContext parserCallStack) {
 		return this;
 	}
 
 	public static class Empty extends SemanticContext {
-		/**
-		 * The default {@link SemanticContext}, which is semantically equivalent to
-		 * a predicate of the form {@code {true}?}.
-		 */
+		
 		public static final Empty Instance = new Empty();
 
 		@Override
@@ -81,7 +39,7 @@ public abstract class SemanticContext {
     public static class Predicate extends SemanticContext {
         public final int ruleIndex;
        	public final int predIndex;
-       	public final boolean isCtxDependent;  // e.g., $i ref in pred
+       	public final boolean isCtxDependent;
 
         protected Predicate() {
             this.ruleIndex = -1;
@@ -180,35 +138,20 @@ public abstract class SemanticContext {
 		}
 
 		@Override
-		// precedence >= _precedenceStack.peek()
+
 		public String toString() {
 			return "{"+precedence+">=prec}?";
 		}
 	}
 
-	/**
-	 * This is the base class for semantic context "operators", which operate on
-	 * a collection of semantic context "operands".
-	 *
-	 * @since 4.3
-	 */
+	
 	public static abstract class Operator extends SemanticContext {
-		/**
-		 * Gets the operands for the semantic context operator.
-		 *
-		 * @return a collection of {@link SemanticContext} operands for the
-		 * operator.
-		 *
-		 * @since 4.3
-		 */
+		
 
 		public abstract Collection<SemanticContext> getOperands();
 	}
 
-	/**
-	 * A semantic context which is true whenever none of the contained contexts
-	 * is false.
-	 */
+	
     public static class AND extends Operator {
 		public final SemanticContext[] opnds;
 
@@ -221,7 +164,7 @@ public abstract class SemanticContext {
 
 			List<PrecedencePredicate> precedencePredicates = filterPrecedencePredicates(operands);
 			if (!precedencePredicates.isEmpty()) {
-				// interested in the transition with the lowest precedence
+
 				PrecedencePredicate reduced = Collections.min(precedencePredicates);
 				operands.add(reduced);
 			}
@@ -247,13 +190,7 @@ public abstract class SemanticContext {
 			return MurmurHash.hashCode(opnds, AND.class.hashCode());
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * <p>
-		 * The evaluation of predicates by this context is short-circuiting, but
-		 * unordered.</p>
-		 */
+		
 		@Override
 		public boolean eval(Recognizer<?,?> parser, RuleContext parserCallStack) {
 			for (SemanticContext opnd : opnds) {
@@ -270,11 +207,11 @@ public abstract class SemanticContext {
 				SemanticContext evaluated = context.evalPrecedence(parser, parserCallStack);
 				differs |= (evaluated != context);
 				if (evaluated == null) {
-					// The AND context is false if any element is false
+
 					return null;
 				}
 				else if (evaluated != Empty.Instance) {
-					// Reduce the result by skipping true elements
+
 					operands.add(evaluated);
 				}
 			}
@@ -284,7 +221,7 @@ public abstract class SemanticContext {
 			}
 
 			if (operands.isEmpty()) {
-				// all elements were true, so the AND context is true
+
 				return Empty.Instance;
 			}
 
@@ -302,10 +239,7 @@ public abstract class SemanticContext {
         }
     }
 
-	/**
-	 * A semantic context which is true whenever at least one of the contained
-	 * contexts is true.
-	 */
+	
     public static class OR extends Operator {
 		public final SemanticContext[] opnds;
 
@@ -318,7 +252,7 @@ public abstract class SemanticContext {
 
 			List<PrecedencePredicate> precedencePredicates = filterPrecedencePredicates(operands);
 			if (!precedencePredicates.isEmpty()) {
-				// interested in the transition with the highest precedence
+
 				PrecedencePredicate reduced = Collections.max(precedencePredicates);
 				operands.add(reduced);
 			}
@@ -344,13 +278,7 @@ public abstract class SemanticContext {
 			return MurmurHash.hashCode(opnds, OR.class.hashCode());
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * <p>
-		 * The evaluation of predicates by this context is short-circuiting, but
-		 * unordered.</p>
-		 */
+		
 		@Override
         public boolean eval(Recognizer<?,?> parser, RuleContext parserCallStack) {
 			for (SemanticContext opnd : opnds) {
@@ -367,11 +295,11 @@ public abstract class SemanticContext {
 				SemanticContext evaluated = context.evalPrecedence(parser, parserCallStack);
 				differs |= (evaluated != context);
 				if (evaluated == Empty.Instance) {
-					// The OR context is true if any element is true
+
 					return Empty.Instance;
 				}
 				else if (evaluated != null) {
-					// Reduce the result by skipping false elements
+
 					operands.add(evaluated);
 				}
 			}
@@ -381,7 +309,7 @@ public abstract class SemanticContext {
 			}
 
 			if (operands.isEmpty()) {
-				// all elements were false, so the OR context is false
+
 				return null;
 			}
 
@@ -410,10 +338,7 @@ public abstract class SemanticContext {
 		return result;
 	}
 
-	/**
-	 *
-	 *  @see ParserATNSimulator#getPredsForAmbigAlts
-	 */
+	
 	public static SemanticContext or(SemanticContext a, SemanticContext b) {
 		if ( a == null ) return b;
 		if ( b == null ) return a;

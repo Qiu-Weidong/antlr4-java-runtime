@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -10,9 +6,7 @@ import runtime.misc.MurmurHash;
 import runtime.misc.ObjectEqualityComparator;
 
 public class LexerATNConfig extends ATNConfig {
-	/**
-	 * This is the backing field for {@link #getLexerActionExecutor}.
-	 */
+	
 	private final LexerActionExecutor lexerActionExecutor;
 
 	private final boolean passedThroughNonGreedyDecision;
@@ -57,10 +51,7 @@ public class LexerATNConfig extends ATNConfig {
 		this.passedThroughNonGreedyDecision = checkNonGreedyDecision(c, state);
 	}
 
-	/**
-	 * Gets the {@link LexerActionExecutor} capable of executing the embedded
-	 * action(s) for the current configuration.
-	 */
+	
 	public final LexerActionExecutor getLexerActionExecutor() {
 		return lexerActionExecutor;
 	}

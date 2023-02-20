@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.misc;
 
@@ -20,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Utils {
-    // Seriously: why isn't this built in to java? ugh!
+
     public static <T> String join(Iterator<T> iter, String separator) {
         StringBuilder buf = new StringBuilder();
         while ( iter.hasNext() ) {
@@ -124,9 +120,7 @@ public class Utils {
 		return data;
 	}
 
-	/** Convert array of strings to string&rarr;index map. Useful for
-	 *  converting rulenames to name&rarr;ruleindex map.
-	 */
+	
 	public static Map<String, Integer> toMap(String[] keys) {
 		Map<String, Integer> m = new HashMap<String, Integer>();
 		for (int i=0; i<keys.length; i++) {
@@ -150,7 +144,7 @@ public class Utils {
 		return s;
 	}
 
-	/** @since 4.6 */
+	
 	public static String expandTabs(String s, int tabSize) {
 		if ( s==null ) return null;
 		StringBuilder buf = new StringBuilder();
@@ -176,24 +170,24 @@ public class Utils {
 		return buf.toString();
 	}
 
-	/** @since 4.6 */
+	
 	public static String spaces(int n) {
 		return sequence(n, " ");
 	}
 
-	/** @since 4.6 */
+	
 	public static String newlines(int n) {
 		return sequence(n, "\n");
 	}
 
-	/** @since 4.6 */
+	
 	public static String sequence(int n, String s) {
 		StringBuilder buf = new StringBuilder();
 		for (int sp=1; sp<=n; sp++) buf.append(s);
 		return buf.toString();
 	}
 
-	/** @since 4.6 */
+	
 	public static int count(String s, char x) {
 		int n = 0;
 		for (int i = 0; i<s.length(); i++) {

@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.tree;
 
@@ -22,29 +18,21 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/** A set of utility routines useful for all kinds of ANTLR trees. */
+
 public class Trees {
-	/** Print out a whole tree in LISP form. {@link #getNodeText} is used on the
-	 *  node payloads to get the text for the nodes.  Detect
-	 *  parse trees and extract data appropriately.
-	 */
+	
 	public static String toStringTree(Tree t) {
 		return toStringTree(t, (List<String>)null);
 	}
 
-	/** Print out a whole tree in LISP form. {@link #getNodeText} is used on the
-	 *  node payloads to get the text for the nodes.  Detect
-	 *  parse trees and extract data appropriately.
-	 */
+	
 	public static String toStringTree(Tree t, Parser recog) {
 		String[] ruleNames = recog != null ? recog.getRuleNames() : null;
 		List<String> ruleNamesList = ruleNames != null ? Arrays.asList(ruleNames) : null;
 		return toStringTree(t, ruleNamesList);
 	}
 
-	/** Print out a whole tree in LISP form. {@link #getNodeText} is used on the
-	 *  node payloads to get the text for the nodes.
-	 */
+	
 	public static String toStringTree(final Tree t, final List<String> ruleNames) {
 		String s = Utils.escapeWhitespace(getNodeText(t, ruleNames), false);
 		if ( t.getChildCount()==0 ) return s;
@@ -97,7 +85,7 @@ public class Trees {
 		return t.getPayload().toString();
 	}
 
-	/** Return ordered list of all children of this node */
+	
 	public static List<Tree> getChildren(Tree t) {
 		List<Tree> kids = new ArrayList<Tree>();
 		for (int i=0; i<t.getChildCount(); i++) {
@@ -106,11 +94,7 @@ public class Trees {
 		return kids;
 	}
 
-	/** Return a list of all ancestors of this node.  The first node of
-	 *  list is the root and the last is the parent of this node.
-	 *
-	 *  @since 4.5.1
-	 */
+	
 	public static List<? extends Tree> getAncestors(Tree t) {
 		if ( t.getParent()==null ) return Collections.emptyList();
 		List<Tree> ancestors = new ArrayList<Tree>();
@@ -122,11 +106,7 @@ public class Trees {
 		return ancestors;
 	}
 
-	/** Return true if t is u's parent or a node on path to root from u.
-	 *  Use == not equals().
-	 *
-	 *  @since 4.5.1
-	 */
+	
 	public static boolean isAncestorOf(Tree t, Tree u) {
 		if ( t==null || u==null || t.getParent()==null ) return false;
 		Tree p = u.getParent();
@@ -169,10 +149,7 @@ public class Trees {
 		}
 	}
 
-	/** Get all descendents; includes t itself.
-	 *
-	 * @since 4.5.1
- 	 */
+	
 	public static List<ParseTree> getDescendants(ParseTree t) {
 		List<ParseTree> nodes = new ArrayList<ParseTree>();
 		nodes.add(t);
@@ -184,17 +161,13 @@ public class Trees {
 		return nodes;
 	}
 
-	/** @deprecated */
+	
   @Deprecated
 	public static List<ParseTree> descendants(ParseTree t) {
 		return getDescendants(t);
 	}
 
-	/** Find smallest subtree of t enclosing range startTokenIndex..stopTokenIndex
-	 *  inclusively using postorder traversal.  Recursive depth-first-search.
-	 *
-	 *  @since 4.5.1
-	 */
+	
 	public static ParserRuleContext getRootOfSubtreeEnclosingRegion(ParseTree t,
 																	int startTokenIndex, // inclusive
 																	int stopTokenIndex)  // inclusive
@@ -217,14 +190,7 @@ public class Trees {
 		return null;
 	}
 
-	/** Replace any subtree siblings of root that are completely to left
-	 *  or right of lookahead range with a CommonToken(Token.INVALID_TYPE,"...")
-	 *  node. The source interval for t is not altered to suit smaller range!
-	 *
-	 *  WARNING: destructive to t.
-	 *
-	 *  @since 4.5.1
-	 */
+	
 	public static void stripChildrenOutOfRange(ParserRuleContext t,
 											   ParserRuleContext root,
 											   int startIndex,
@@ -243,10 +209,7 @@ public class Trees {
 		}
 	}
 
-	/** Return first node satisfying the pred
-	 *
- 	 *  @since 4.5.1
-	 */
+	
 	public static Tree findNodeSuchThat(Tree t, Predicate<Tree> pred) {
 		if ( pred.test(t) ) return t;
 

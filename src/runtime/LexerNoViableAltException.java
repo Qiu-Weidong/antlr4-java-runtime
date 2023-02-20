@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime;
 
@@ -13,10 +9,10 @@ import runtime.misc.Utils;
 import java.util.Locale;
 
 public class LexerNoViableAltException extends RecognitionException {
-	/** Matching attempted at what input index? */
+	
 	private final int startIndex;
 
-	/** Which configurations did we try at input.index() that couldn't match input.LA(1)? */
+	
 	private final ATNConfigSet deadEndConfigs;
 
 	public LexerNoViableAltException(Lexer lexer,

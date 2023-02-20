@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -14,9 +10,7 @@ import runtime.dfa.DFAState;
 
 import java.util.BitSet;
 
-/**
- * @since 4.3
- */
+
 public class ProfilingATNSimulator extends ParserATNSimulator {
 	protected final DecisionInfo[] decisions;
 	protected int numDecisions;
@@ -27,17 +21,7 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 	protected int currentDecision;
 	protected DFAState currentState;
 
- 	/** At the point of LL failover, we record how SLL would resolve the conflict so that
-	 *  we can determine whether or not a decision / input pair is context-sensitive.
-	 *  If LL gives a different result than SLL's predicted alternative, we have a
-	 *  context sensitivity for sure. The converse is not necessarily true, however.
-	 *  It's possible that after conflict resolution chooses minimum alternatives,
-	 *  SLL could get the same answer as LL. Regardless of whether or not the result indicates
-	 *  an ambiguity, it is not treated as a context sensitivity because LL prediction
-	 *  was not required in order to produce a correct prediction for this decision and input sequence.
-	 *  It may in fact still be a context sensitivity but we don't know by looking at the
-	 *  minimum alternatives for the current input.
- 	 */
+ 	
 	protected int conflictingAltResolvedBySLL;
 
 	public ProfilingATNSimulator(Parser parser) {
@@ -58,7 +42,7 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 			this._sllStopIndex = -1;
 			this._llStopIndex = -1;
 			this.currentDecision = decision;
-			long start = System.nanoTime(); // expensive but useful info
+			long start = System.nanoTime();
 			int alt = super.adaptivePredict(input, decision, outerContext);
 			long stop = System.nanoTime();
 			decisions[decision].timeInPrediction += (stop-start);
@@ -93,13 +77,13 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 
 	@Override
 	protected DFAState getExistingTargetState(DFAState previousD, int t) {
-		// this method is called after each time the input position advances
-		// during SLL prediction
+
+
 		_sllStopIndex = _input.index();
 
 		DFAState existingTargetState = super.getExistingTargetState(previousD, t);
 		if ( existingTargetState!=null ) {
-			decisions[currentDecision].SLL_DFATransitions++; // count only if we transition over a DFA state
+			decisions[currentDecision].SLL_DFATransitions++;
 			if ( existingTargetState==ERROR ) {
 				decisions[currentDecision].errors.add(
 						new ErrorInfo(currentDecision, previousD.configs, _input, _startIndex, _sllStopIndex, false)
@@ -121,18 +105,18 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 	@Override
 	protected ATNConfigSet computeReachSet(ATNConfigSet closure, int t, boolean fullCtx) {
 		if (fullCtx) {
-			// this method is called after each time the input position advances
-			// during full context prediction
+
+
 			_llStopIndex = _input.index();
 		}
 
 		ATNConfigSet reachConfigs = super.computeReachSet(closure, t, fullCtx);
 		if (fullCtx) {
-			decisions[currentDecision].LL_ATNTransitions++; // count computation even if error
+			decisions[currentDecision].LL_ATNTransitions++;
 			if ( reachConfigs!=null ) {
 			}
-			else { // no reach on current lookahead symbol. ERROR.
-				// TODO: does not handle delayed errors per getSynValidOrSemInvalidAltThatFinishedDecisionEntryRule()
+			else {
+
 				decisions[currentDecision].errors.add(
 					new ErrorInfo(currentDecision, closure, _input, _startIndex, _llStopIndex, true)
 				);
@@ -142,7 +126,7 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 			decisions[currentDecision].SLL_ATNTransitions++;
 			if ( reachConfigs!=null ) {
 			}
-			else { // no reach on current lookahead symbol. ERROR.
+			else {
 				decisions[currentDecision].errors.add(
 					new ErrorInfo(currentDecision, closure, _input, _startIndex, _sllStopIndex, false)
 				);
@@ -199,11 +183,11 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 			prediction = configs.getAlts().nextSetBit(0);
 		}
 		if ( configs.fullCtx && prediction != conflictingAltResolvedBySLL ) {
-			// Even though this is an ambiguity we are reporting, we can
-			// still detect some context sensitivities.  Both SLL and LL
-			// are showing a conflict, hence an ambiguity, but if they resolve
-			// to different minimum alternatives we have also identified a
-			// context sensitivity.
+
+
+
+
+
 			decisions[currentDecision].contextSensitivities.add(
 					new ContextSensitivityInfo(currentDecision, configs, _input, startIndex, stopIndex)
 			);
@@ -215,7 +199,7 @@ public class ProfilingATNSimulator extends ParserATNSimulator {
 		super.reportAmbiguity(dfa, D, startIndex, stopIndex, exact, ambigAlts, configs);
 	}
 
-	// ---------------------------------------------------------------------
+
 
 	public DecisionInfo[] getDecisionInfo() {
 		return decisions;

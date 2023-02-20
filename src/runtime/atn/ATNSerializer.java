@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
- * Use of this file is governed by the BSD 3-clause license that
- * can be found in the LICENSE.txt file in the project root.
- */
+
 
 package runtime.atn;
 
@@ -17,19 +13,12 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/** This class represents a target neutral serializer for ATNs. An ATN is converted to a list of integers
- *  that can be converted back to and ATN. We compute the list of integers and then generate an array
- *  into the target language for a particular lexer or parser.  Java is a special case where we must
- *  generate strings instead of arrays, but that is handled outside of this class.
- *  See {@link ATNDeserializer#encodeIntsWith16BitWords(IntegerList)} and
- *  {@link org.antlr.v4.codegen.model.SerializedJavaATN}.
- */
+
 public class ATNSerializer {
 	public ATN atn;
 
 	private final IntegerList data = new IntegerList();
-	/** Note that we use a LinkedHashMap as a set to mainintain insertion order while deduplicating
-	    entries with the same key. */
+	
 	private final Map<IntervalSet, Boolean> sets = new LinkedHashMap<>();
 	private final IntegerList nonGreedyStates = new IntegerList();
 	private final IntegerList precedenceStates = new IntegerList();
@@ -39,31 +28,7 @@ public class ATNSerializer {
 		this.atn = atn;
 	}
 
-	/** Serialize state descriptors, edge descriptors, and decision&rarr;state map
-	 *  into list of ints.  Likely out of date, but keeping as it could be helpful:
-	 *
-	 *      SERIALIZED_VERSION
-	 *      UUID (2 longs)
-	 * 		grammar-type, (ANTLRParser.LEXER, ...)
-	 *  	max token type,
-	 *  	num states,
-	 *  	state-0-type ruleIndex, state-1-type ruleIndex, ... state-i-type ruleIndex optional-arg ...
-	 *  	num rules,
-	 *  	rule-1-start-state rule-1-args, rule-2-start-state  rule-2-args, ...
-	 *  	(args are token type,actionIndex in lexer else 0,0)
-	 *      num modes,
-	 *      mode-0-start-state, mode-1-start-state, ... (parser has 0 modes)
-	 *      num unicode-bmp-sets
-	 *      bmp-set-0-interval-count intervals, bmp-set-1-interval-count intervals, ...
-	 *      num unicode-smp-sets
-	 *      smp-set-0-interval-count intervals, smp-set-1-interval-count intervals, ...
-	 *	num total edges,
-	 *      src, trg, edge-type, edge arg1, optional edge arg2 (present always), ...
-	 *      num decisions,
-	 *      decision-0-start-state, decision-1-start-state, ...
-	 *
-	 *  Convenient to pack into unsigned shorts to make as Java string.
-	 */
+	
 	public IntegerList serialize() {
 		addPreamble();
 		int nedges = addEdges();
@@ -83,7 +48,7 @@ public class ATNSerializer {
 	private void addPreamble() {
 		data.add(ATNDeserializer.SERIALIZED_VERSION);
 
-		// convert grammar type to ATN const to avoid dependence on ANTLRParser
+
 		data.add(atn.grammarType.ordinal());
 		data.add(atn.maxTokenType);
 	}
@@ -160,7 +125,7 @@ public class ATNSerializer {
 		data.add(nedges);
 		for (ATNState s : atn.states) {
 			if ( s==null ) {
-				// might be optimized away
+
 				continue;
 			}
 
@@ -266,7 +231,7 @@ public class ATNSerializer {
 			ATNState ruleStartState = atn.ruleToStartState[r];
 			data.add(ruleStartState.stateNumber);
 			if (atn.grammarType == ATNType.LEXER) {
-				assert atn.ruleToTokenType[r]>=0; // 0 implies fragment rule, other token types > 0
+				assert atn.ruleToTokenType[r]>=0;
 				data.add(atn.ruleToTokenType[r]);
 			}
 		}
@@ -290,7 +255,7 @@ public class ATNSerializer {
 		int nedges = 0;
 		data.add(atn.states.size());
 		for (ATNState s : atn.states) {
-			if ( s==null ) { // might be optimized away
+			if ( s==null ) {
 				data.add(ATNState.INVALID_TYPE);
 				continue;
 			}
@@ -316,7 +281,7 @@ public class ATNSerializer {
 			}
 
 			if (s.getStateType() != ATNState.RULE_STOP) {
-				// the deserializer can trivially derive these edges, so there's no need to serialize them
+
 				nedges += s.getNumberOfTransitions();
 			}
 
