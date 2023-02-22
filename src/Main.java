@@ -1,8 +1,23 @@
-
+import runtime.CharStream;
+import runtime.CharStreams;
+import runtime.misc.Interval;
+import runtime.misc.IntervalSet;
 
 public class Main {
     public static void main(String[] args) {
-        String s = "\u0004\u0000\u0018\u00e6\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0002";
-        System.out.println(s.length());
+        // 闭区间
+        Interval range = Interval.of(0, 5);
+        IntervalSet set1 = IntervalSet.of(0, 5);
+        set1.add(8, 10);
+
+        IntervalSet set2 = IntervalSet.of(8);
+        set2.add(7, 9);
+
+        System.out.println(set1);
+        System.out.println(set2);
+
+        IntervalSet set3 = set1.complement(set2);
+        System.out.println(set3);
+
     }
 }

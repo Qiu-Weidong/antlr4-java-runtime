@@ -159,12 +159,8 @@ public class IntervalSet implements IntSet {
 		return this;
     }
 
-    public IntervalSet complement(int minElement, int maxElement) {
-        return this.complement(IntervalSet.of(minElement,maxElement));
-    }
-
-    
-    @Override
+	// 求补集
+	@Override
     public IntervalSet complement(IntSet vocabulary) {
 		if ( vocabulary==null || vocabulary.isNil() ) {
 			return null;
@@ -383,16 +379,7 @@ public class IntervalSet implements IntSet {
         return intervals==null || intervals.isEmpty();
     }
 
-	
-	public int getMaxElement() {
-		if ( isNil() ) {
-			throw new RuntimeException("set is empty");
-		}
-		Interval last = intervals.get(intervals.size()-1);
-		return last.b;
-	}
 
-	
 	public int getMinElement() {
 		if ( isNil() ) {
 			throw new RuntimeException("set is empty");
@@ -565,23 +552,6 @@ public class IntervalSet implements IntSet {
 		return s;
 	}
 
-	
-	public int get(int i) {
-		int n = intervals.size();
-		int index = 0;
-		for (int j = 0; j < n; j++) {
-			Interval I = intervals.get(j);
-			int a = I.a;
-			int b = I.b;
-			for (int v=a; v<=b; v++) {
-				if ( index==i ) {
-					return v;
-				}
-				index++;
-			}
-		}
-		return -1;
-	}
 
 	public int[] toArray() {
 		return toIntegerList().toArray();
