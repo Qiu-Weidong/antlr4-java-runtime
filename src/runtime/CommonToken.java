@@ -40,11 +40,6 @@ public class CommonToken implements WritableToken, Serializable {
 	protected int stop;
 
 
-	public CommonToken(int type) {
-		this.type = type;
-		this.source = EMPTY_SOURCE;
-	}
-
 	public CommonToken(Pair<TokenSource, CharStream> source, int type, int channel, int start, int stop) {
 		this.source = source;
 		this.type = type;
@@ -65,25 +60,6 @@ public class CommonToken implements WritableToken, Serializable {
 		this.source = EMPTY_SOURCE;
 	}
 
-
-	public CommonToken(Token oldToken) {
-		type = oldToken.getType();
-		line = oldToken.getLine();
-		index = oldToken.getTokenIndex();
-		charPositionInLine = oldToken.getCharPositionInLine();
-		channel = oldToken.getChannel();
-		start = oldToken.getStartIndex();
-		stop = oldToken.getStopIndex();
-
-		if (oldToken instanceof CommonToken) {
-			text = ((CommonToken)oldToken).text;
-			source = ((CommonToken)oldToken).source;
-		}
-		else {
-			text = oldToken.getText();
-			source = new Pair<TokenSource, CharStream>(oldToken.getTokenSource(), oldToken.getInputStream());
-		}
-	}
 
 	@Override
 	public int getType() {

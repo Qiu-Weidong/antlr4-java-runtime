@@ -28,7 +28,7 @@ public class FailedPredicateException extends RecognitionException {
 		super(formatMessage(predicate, message), recognizer, recognizer.getInputStream(), recognizer._ctx);
 		ATNState s = recognizer.getInterpreter().atn.states.get(recognizer.getState());
 
-		AbstractPredicateTransition trans = (AbstractPredicateTransition)s.transition(0);
+		AbstractPredicateTransition trans = (AbstractPredicateTransition)s.get_transition(0);
 		if (trans instanceof PredicateTransition) {
 			this.ruleIndex = ((PredicateTransition)trans).ruleIndex;
 			this.predicateIndex = ((PredicateTransition)trans).predIndex;

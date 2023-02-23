@@ -49,7 +49,7 @@ public abstract class PredictionContext {
 		parent = PredictionContext.fromRuleContext(atn, outerContext.parent);
 
 		ATNState state = atn.states.get(outerContext.invokingState);
-		RuleTransition transition = (RuleTransition)state.transition(0);
+		RuleTransition transition = (RuleTransition)state.get_transition(0);
 		return SingletonPredictionContext.create(parent, transition.followState.stateNumber);
 	}
 

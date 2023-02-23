@@ -74,17 +74,9 @@ public abstract class ATNState {
 		return false;
 	}
 
-	public boolean isNonGreedyExitState() {
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		return String.valueOf(stateNumber);
-	}
-
-	public Transition[] getTransitions() {
-		return transitions.toArray(new Transition[0]);
 	}
 
 	public int getNumberOfTransitions() {
@@ -124,7 +116,7 @@ public abstract class ATNState {
 		}
 	}
 
-	public Transition transition(int i) { return transitions.get(i); }
+	public Transition get_transition(int i) { return transitions.get(i); }
 
 	public void setTransition(int i, Transition e) {
 		transitions.set(i, e);

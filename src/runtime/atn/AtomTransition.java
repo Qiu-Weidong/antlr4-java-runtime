@@ -7,11 +7,11 @@ import runtime.misc.IntervalSet;
 
 public final class AtomTransition extends Transition {
 	
-	public final int label;
+	public final int atom_label;
 
 	public AtomTransition(ATNState target, int label) {
 		super(target);
-		this.label = label;
+		this.atom_label = label;
 	}
 
 	@Override
@@ -21,15 +21,15 @@ public final class AtomTransition extends Transition {
 
 	@Override
 
-	public IntervalSet label() { return IntervalSet.of(label); }
+	public IntervalSet label() { return IntervalSet.of(atom_label); }
 
 	@Override
 	public boolean matches(int symbol, int minVocabSymbol, int maxVocabSymbol) {
-		return label == symbol;
+		return atom_label == symbol;
 	}
 
 	@Override
 	public String toString() {
-		return String.valueOf(label);
+		return String.valueOf(atom_label);
 	}
 }

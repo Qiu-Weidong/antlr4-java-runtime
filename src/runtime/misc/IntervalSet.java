@@ -4,7 +4,6 @@ package runtime.misc;
 import runtime.Lexer;
 import runtime.Token;
 import runtime.Vocabulary;
-import runtime.VocabularyImpl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,9 +76,10 @@ public class IntervalSet implements IntSet {
     }
 
     
-    public void add(int a, int b) {
+    public IntervalSet add(int a, int b) {
         add(Interval.of(a, b));
-    }
+		return null;
+	}
 
 
 	protected void add(Interval addition) {

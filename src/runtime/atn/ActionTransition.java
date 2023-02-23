@@ -7,10 +7,6 @@ public final class ActionTransition extends Transition {
 	public final int actionIndex;
 	public final boolean isCtxDependent;
 
-	public ActionTransition(ATNState target, int ruleIndex) {
-		this(target, ruleIndex, -1, false);
-	}
-
 	public ActionTransition(ATNState target, int ruleIndex, int actionIndex, boolean isCtxDependent) {
 		super(target);
 		this.ruleIndex = ruleIndex;

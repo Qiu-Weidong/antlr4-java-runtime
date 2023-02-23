@@ -19,11 +19,6 @@ public class ATNDeserializationOptions {
 		this.generateRuleBypassTransitions = false;
 	}
 
-	public ATNDeserializationOptions(ATNDeserializationOptions options) {
-		this.verifyATN = options.verifyATN;
-		this.generateRuleBypassTransitions = options.generateRuleBypassTransitions;
-	}
-
 
 	public static ATNDeserializationOptions getDefaultOptions() {
 		return defaultOptions;

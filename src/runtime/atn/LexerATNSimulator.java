@@ -284,7 +284,7 @@ public class LexerATNSimulator extends ATNSimulator {
 
 			int n = c.state.getNumberOfTransitions();
 			for (int ti=0; ti<n; ti++) {
-				Transition trans = c.state.transition(ti);
+				Transition trans = c.state.get_transition(ti);
 				ATNState target = getReachableTarget(trans, t);
 				if ( target!=null ) {
 					LexerActionExecutor lexerActionExecutor = ((LexerATNConfig)c).getLexerActionExecutor();
@@ -337,7 +337,7 @@ public class LexerATNSimulator extends ATNSimulator {
 		PredictionContext initialContext = EmptyPredictionContext.Instance;
 		ATNConfigSet configs = new OrderedATNConfigSet();
 		for (int i=0; i<p.getNumberOfTransitions(); i++) {
-			ATNState target = p.transition(i).target;
+			ATNState target = p.get_transition(i).target;
 			LexerATNConfig c = new LexerATNConfig(target, i+1, initialContext);
 			closure(input, c, configs, false, false, false);
 		}
@@ -394,7 +394,7 @@ public class LexerATNSimulator extends ATNSimulator {
 
 		ATNState p = config.state;
 		for (int i=0; i<p.getNumberOfTransitions(); i++) {
-			Transition t = p.transition(i);
+			Transition t = p.get_transition(i);
 			LexerATNConfig c = getEpsilonTarget(input, config, t, configs, speculative, treatEofAsEpsilon);
 			if ( c!=null ) {
 				currentAltReachedAcceptState = closure(input, c, configs, currentAltReachedAcceptState, speculative, treatEofAsEpsilon);

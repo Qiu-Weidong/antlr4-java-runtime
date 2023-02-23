@@ -255,7 +255,7 @@ public class DefaultErrorStrategy implements ANTLRErrorStrategy {
 		int currentSymbolType = recognizer.getInputStream().LA(1);
 
 		ATNState currentState = recognizer.getInterpreter().atn.states.get(recognizer.getState());
-		ATNState next = currentState.transition(0).target;
+		ATNState next = currentState.get_transition(0).target;
 		ATN atn = recognizer.getInterpreter().atn;
 		IntervalSet expectingAtLL2 = atn.nextTokens(next, recognizer._ctx);
 
@@ -348,7 +348,7 @@ public class DefaultErrorStrategy implements ANTLRErrorStrategy {
 		while ( ctx!=null && ctx.invokingState>=0 ) {
 			// compute what follows who invoked us
 			ATNState invokingState = atn.states.get(ctx.invokingState);
-			RuleTransition rt = (RuleTransition)invokingState.transition(0);
+			RuleTransition rt = (RuleTransition)invokingState.get_transition(0);
 			IntervalSet follow = atn.nextTokens(rt.followState);
 			recoverSet.addAll(follow);
 			ctx = ctx.parent;

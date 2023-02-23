@@ -20,16 +20,6 @@ public class LexerATNConfig extends ATNConfig {
 		this.lexerActionExecutor = null;
 	}
 
-	public LexerATNConfig(ATNState state,
-						  int alt,
-						  PredictionContext context,
-						  LexerActionExecutor lexerActionExecutor)
-	{
-		super(state, alt, context, SemanticContext.Empty.Instance);
-		this.lexerActionExecutor = lexerActionExecutor;
-		this.passedThroughNonGreedyDecision = false;
-	}
-
 	public LexerATNConfig(LexerATNConfig c, ATNState state) {
 		super(c, state, c.context, c.semanticContext);
 		this.lexerActionExecutor = c.lexerActionExecutor;
