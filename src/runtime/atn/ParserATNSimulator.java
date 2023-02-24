@@ -808,7 +808,7 @@ public class ParserATNSimulator extends ATNSimulator {
 
 			int n = c.state.getNumberOfTransitions();
 			for (int ti=0; ti<n; ti++) {               // for each transition
-				Transition trans = c.state.transition(ti);
+				Transition trans = c.state.get_transition(ti);
 				ATNState target = getReachableTarget(trans, t);
 				if ( target!=null ) {
 					intermediate.add(new ATNConfig(c, target), mergeCache);
@@ -950,7 +950,7 @@ public class ParserATNSimulator extends ATNSimulator {
 		ATNConfigSet configs = new ATNConfigSet(fullCtx);
 
 		for (int i=0; i<p.getNumberOfTransitions(); i++) {
-			ATNState target = p.transition(i).target;
+			ATNState target = p.get_transition(i).target;
 			ATNConfig c = new ATNConfig(target, i+1, initialContext);
 			Set<ATNConfig> closureBusy = new HashSet<ATNConfig>();
 			closure(c, configs, closureBusy, true, fullCtx, false);
@@ -1534,7 +1534,7 @@ public class ParserATNSimulator extends ATNSimulator {
 		for (int i=0; i<p.getNumberOfTransitions(); i++) {
 			if ( i==0 && canDropLoopEntryEdgeInLeftRecursiveRule(config) ) continue;
 
-			Transition t = p.transition(i);
+			Transition t = p.get_transition(i);
 			boolean continueCollecting =
 				!(t instanceof ActionTransition) && collectPredicates;
 			ATNConfig c = getEpsilonTarget(config, t, continueCollecting,
@@ -1699,7 +1699,7 @@ public class ParserATNSimulator extends ATNSimulator {
 			if ( returnState.ruleIndex != p.ruleIndex ) return false;
 		}
 
-		BlockStartState decisionStartState = (BlockStartState)p.transition(0).target;
+		BlockStartState decisionStartState = (BlockStartState)p.get_transition(0).target;
 		int blockEndStateNum = decisionStartState.endState.stateNumber;
 		BlockEndState blockEndState = (BlockEndState)atn.states.get(blockEndStateNum);
 
@@ -1710,12 +1710,12 @@ public class ParserATNSimulator extends ATNSimulator {
 			ATNState returnState = atn.states.get(returnStateNumber);
 			// all states must have single outgoing epsilon edge
 			if ( returnState.getNumberOfTransitions()!=1 ||
-				 !returnState.transition(0).isEpsilon() )
+				 !returnState.get_transition(0).isEpsilon() )
 			{
 				return false;
 			}
 			// Look for prefix op case like 'not expr', (' type ')' expr
-			ATNState returnStateTarget = returnState.transition(0).target;
+			ATNState returnStateTarget = returnState.get_transition(0).target;
 			if ( returnState.getStateType()==BLOCK_END && returnStateTarget==p ) {
 				continue;
 			}
@@ -1734,8 +1734,8 @@ public class ParserATNSimulator extends ATNSimulator {
 			// return state points at block end state of (...)* internal block
 			if ( returnStateTarget.getStateType() == BLOCK_END &&
 				 returnStateTarget.getNumberOfTransitions()==1 &&
-				 returnStateTarget.transition(0).isEpsilon() &&
-				 returnStateTarget.transition(0).target == p )
+				 returnStateTarget.get_transition(0).isEpsilon() &&
+				 returnStateTarget.get_transition(0).target == p )
 			{
 				continue;
 			}
@@ -2001,10 +2001,10 @@ public class ParserATNSimulator extends ATNSimulator {
 		for (ATNConfig c : nvae.getDeadEndConfigs()) {
 			String trans = "no edges";
 			if ( c.state.getNumberOfTransitions()>0 ) {
-				Transition t = c.state.transition(0);
+				Transition t = c.state.get_transition(0);
 				if ( t instanceof AtomTransition) {
 					AtomTransition at = (AtomTransition)t;
-					trans = "Atom "+getTokenName(at.label);
+					trans = "Atom "+getTokenName(at.atom_label);
 				}
 				else if ( t instanceof SetTransition ) {
 					SetTransition st = (SetTransition)t;

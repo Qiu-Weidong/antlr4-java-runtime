@@ -30,7 +30,7 @@ public class LL1Analyzer {
 			look[alt] = new IntervalSet();
 			Set<ATNConfig> lookBusy = new HashSet<ATNConfig>();
 			boolean seeThruPreds = false;
-			_LOOK(s.transition(alt).target, null, EmptyPredictionContext.Instance,
+			_LOOK(s.get_transition(alt).target, null, EmptyPredictionContext.Instance,
 				  look[alt], lookBusy, new BitSet(), seeThruPreds, false);
 
 
@@ -113,7 +113,7 @@ public class LL1Analyzer {
 
         int n = s.getNumberOfTransitions();
         for (int i=0; i<n; i++) {
-			Transition t = s.transition(i);
+			Transition t = s.get_transition(i);
 			if ( t.getClass() == RuleTransition.class ) {
 				if (calledRuleStack.get(((RuleTransition)t).target.ruleIndex)) {
 					continue;

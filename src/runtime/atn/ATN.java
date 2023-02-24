@@ -21,21 +21,26 @@ public class ATN {
 	
 	public final List<DecisionState> decisionToState = new ArrayList<DecisionState>();
 
-	
+
+	public final Map<String, TokensStartState> modeNameToStartState =
+			new LinkedHashMap<String, TokensStartState>();
+
+
+	public final ATNType grammarType;
+
+
+	public final int maxTokenType;
+
+
+	public final List<TokensStartState> modeToStartState = new ArrayList<TokensStartState>();
+
+
 	public RuleStartState[] ruleToStartState;
 
 	
 	public RuleStopState[] ruleToStopState;
 
 
-	public final Map<String, TokensStartState> modeNameToStartState =
-		new LinkedHashMap<String, TokensStartState>();
-
-	
-	public final ATNType grammarType;
-
-	
-	public final int maxTokenType;
 
 	
 	public int[] ruleToTokenType;
@@ -43,7 +48,7 @@ public class ATN {
 	
 	public LexerAction[] lexerActions;
 
-	public final List<TokensStartState> modeToStartState = new ArrayList<TokensStartState>();
+
 
 	
 	public ATN(ATNType grammarType, int maxTokenType) {
@@ -114,7 +119,7 @@ public class ATN {
 		expected.remove(Token.EPSILON);
 		while (ctx != null && ctx.invokingState >= 0 && following.contains(Token.EPSILON)) {
 			ATNState invokingState = states.get(ctx.invokingState);
-			RuleTransition rt = (RuleTransition)invokingState.transition(0);
+			RuleTransition rt = (RuleTransition)invokingState.get_transition(0);
 			following = nextTokens(rt.followState);
 			expected.addAll(following);
 			expected.remove(Token.EPSILON);

@@ -108,7 +108,7 @@ public class ATNConfig {
 	
     @Override
     public boolean equals(Object o) {
-		if (!(o instanceof ATNConfig)) {
+		if (!(o instanceof ATNConfig)){
 			return false;
 		}
 

@@ -3,10 +3,8 @@
 package runtime.atn;
 
 import runtime.dfa.DFAState;
-import runtime.misc.IntervalSet;
 
 import java.util.IdentityHashMap;
-import java.util.List;
 
 public abstract class ATNSimulator {
 	

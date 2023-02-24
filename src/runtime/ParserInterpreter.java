@@ -167,7 +167,7 @@ public class ParserInterpreter extends Parser {
 			predictedAlt = visitDecisionState((DecisionState) p);
 		}
 
-		Transition transition = p.transition(predictedAlt - 1);
+		Transition transition = p.get_transition(predictedAlt - 1);
 		switch (transition.getSerializationType()) {
 			case Transition.EPSILON:
 				if ( p.getStateType()==ATNState.STAR_LOOP_ENTRY &&
@@ -187,7 +187,7 @@ public class ParserInterpreter extends Parser {
 				break;
 
 			case Transition.ATOM:
-				match(((AtomTransition)transition).label);
+				match(((AtomTransition)transition).atom_label);
 				break;
 
 			case Transition.RANGE:
@@ -280,7 +280,7 @@ public class ParserInterpreter extends Parser {
 			exitRule();
 		}
 
-		RuleTransition ruleTransition = (RuleTransition)atn.states.get(getState()).transition(0);
+		RuleTransition ruleTransition = (RuleTransition)atn.states.get(getState()).get_transition(0);
 		setState(ruleTransition.followState.stateNumber);
 	}
 

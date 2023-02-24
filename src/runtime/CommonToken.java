@@ -40,11 +40,6 @@ public class CommonToken implements WritableToken, Serializable {
 	protected int stop;
 
 
-	public CommonToken(int type) {
-		this.type = type;
-		this.source = EMPTY_SOURCE;
-	}
-
 	public CommonToken(Pair<TokenSource, CharStream> source, int type, int channel, int start, int stop) {
 		this.source = source;
 		this.type = type;

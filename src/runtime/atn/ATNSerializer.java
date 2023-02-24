@@ -134,7 +134,7 @@ public class ATNSerializer {
 			}
 
 			for (int i=0; i<s.getNumberOfTransitions(); i++) {
-				Transition t = s.transition(i);
+				Transition t = s.get_transition(i);
 
 				if (atn.states.get(t.target.stateNumber) == null) {
 					throw new IllegalStateException("Cannot serialize a transition to a removed state.");
@@ -172,7 +172,7 @@ public class ATNSerializer {
 						}
 						break;
 					case Transition.ATOM :
-						arg1 = ((AtomTransition)t).label;
+						arg1 = ((AtomTransition)t).atom_label;
 						if (arg1 == Token.EOF) {
 							arg1 = 0;
 							arg3 = 1;
@@ -286,7 +286,7 @@ public class ATNSerializer {
 			}
 
 			for (int i=0; i<s.getNumberOfTransitions(); i++) {
-				Transition t = s.transition(i);
+				Transition t = s.get_transition(i);
 				int edgeType = Transition.serializationTypes.get(t.getClass());
 				if ( edgeType == Transition.SET || edgeType == Transition.NOT_SET ) {
 					SetTransition st = (SetTransition)t;

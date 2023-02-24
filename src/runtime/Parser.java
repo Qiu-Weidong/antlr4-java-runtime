@@ -17,7 +17,6 @@ import runtime.misc.IntervalSet;
 import runtime.tree.ErrorNode;
 import runtime.tree.ErrorNodeImpl;
 import runtime.tree.ParseTreeListener;
-import runtime.tree.ParseTreeWalker;
 import runtime.tree.TerminalNode;
 import runtime.tree.TerminalNodeImpl;
 
@@ -26,8 +25,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 
 public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
@@ -527,7 +524,7 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 
         while ( ctx!=null && ctx.invokingState>=0 && following.contains(Token.EPSILON) ) {
             ATNState invokingState = atn.states.get(ctx.invokingState);
-            RuleTransition rt = (RuleTransition)invokingState.transition(0);
+            RuleTransition rt = (RuleTransition)invokingState.get_transition(0);
             following = atn.nextTokens(rt.followState);
             if (following.contains(symbol)) {
                 return true;
