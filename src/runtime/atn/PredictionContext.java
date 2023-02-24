@@ -484,29 +484,6 @@ public abstract class PredictionContext {
 		return updated;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public static List<PredictionContext> getAllContextNodes(PredictionContext context) {
 		List<PredictionContext> nodes = new ArrayList<PredictionContext>();
 		Map<PredictionContext, PredictionContext> visited =

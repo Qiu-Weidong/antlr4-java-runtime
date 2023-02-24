@@ -1,4 +1,4 @@
-package examples;// Generated from java-escape by ANTLR 4.11.1
+package examples.dot;// Generated from java-escape by ANTLR 4.11.1
 import runtime.Lexer;
 import runtime.CharStream;
 import runtime.*;
@@ -66,7 +66,7 @@ public class DotLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "examples/Dot.g4"; }
+	public String getGrammarFileName() { return "examples/dot/Dot.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

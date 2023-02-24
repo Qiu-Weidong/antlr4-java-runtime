@@ -66,25 +66,6 @@ public class CommonToken implements WritableToken, Serializable {
 	}
 
 
-	public CommonToken(Token oldToken) {
-		type = oldToken.getType();
-		line = oldToken.getLine();
-		index = oldToken.getTokenIndex();
-		charPositionInLine = oldToken.getCharPositionInLine();
-		channel = oldToken.getChannel();
-		start = oldToken.getStartIndex();
-		stop = oldToken.getStopIndex();
-
-		if (oldToken instanceof CommonToken) {
-			text = ((CommonToken)oldToken).text;
-			source = ((CommonToken)oldToken).source;
-		}
-		else {
-			text = oldToken.getText();
-			source = new Pair<TokenSource, CharStream>(oldToken.getTokenSource(), oldToken.getInputStream());
-		}
-	}
-
 	@Override
 	public int getType() {
 		return type;

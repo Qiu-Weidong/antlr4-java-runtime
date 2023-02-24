@@ -1,4 +1,4 @@
-package examples;// Generated from java-escape by ANTLR 4.11.1
+package examples.dot;// Generated from java-escape by ANTLR 4.11.1
 import runtime.tree.AbstractParseTreeVisitor;
 
 /**
