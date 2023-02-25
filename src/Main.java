@@ -1,35 +1,25 @@
+import examples.DotLexer;
+import examples.DotParser;
 import runtime.CharStream;
 import runtime.CharStreams;
+import runtime.CommonTokenStream;
 import runtime.misc.Interval;
 import runtime.misc.IntervalSet;
+import runtime.tree.ParseTree;
 
+// 用作 Map 的主鍵的類 ATNConfig ATNState DFAState PredictionContext
 public class Main {
     public static void main(String[] args) {
-        // 闭区间
-        IntervalSet total = IntervalSet.of(0, 255);
+        CharStream stream = CharStreams.fromString("digraph { a -> b; c -- d; " +
+                "subgraph cluster_0 { c -> x; }" +
+                "}");
+        DotLexer lexer = new DotLexer(stream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        DotParser parser = new DotParser(tokens);
+        ParseTree ast = parser.graph_list();
 
-        IntervalSet set1 = IntervalSet.of(128);
-        set1.setReadonly(false);
-        set1.add(0, 8);
-        set1.add(8, 10);
-        set1.add(23, 45);
-        set1.add(90, 127);
-        set1.add(78, 119);
-        set1.add(145, 197);
-
-        IntervalSet set2 = IntervalSet.of(120);
-        set2.add(8, 100);
-        set2.add(7,12);
-        set2.add(9, 34);
-        set2.add(129, 213);
-
-        System.out.println(set1);
-        System.out.println(set2);
-        System.out.println(set1.and(set2));
-        System.out.println(set1.or(set2));
-        System.out.println(set1.subtract(set2));
-        System.out.println(set1.complement(set2));
-
+        String result = ast.toStringTree(parser);
+        System.out.println(result);
 
     }
 }

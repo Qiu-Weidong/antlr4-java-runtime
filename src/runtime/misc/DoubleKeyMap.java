@@ -3,19 +3,19 @@
 package runtime.misc;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 
 public class DoubleKeyMap<Key1, Key2, Value> {
-	Map<Key1, Map<Key2, Value>> data = new LinkedHashMap<Key1, Map<Key2, Value>>();
+	Map<Key1, Map<Key2, Value>> data = new HashMap<Key1, Map<Key2, Value>>();
 
 	public Value put(Key1 k1, Key2 k2, Value v) {
 		Map<Key2, Value> data2 = data.get(k1);
 		Value prev = null;
 		if ( data2==null ) {
-			data2 = new LinkedHashMap<Key2, Value>();
+			data2 = new HashMap<Key2, Value>();
 			data.put(k1, data2);
 		}
 		else {

@@ -7,9 +7,7 @@ import runtime.Token;
 import runtime.misc.IntervalSet;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class ATN {
@@ -20,10 +18,6 @@ public class ATN {
 
 	
 	public final List<DecisionState> decisionToState = new ArrayList<DecisionState>();
-
-
-	public final Map<String, TokensStartState> modeNameToStartState =
-			new LinkedHashMap<String, TokensStartState>();
 
 
 	public final ATNType grammarType;

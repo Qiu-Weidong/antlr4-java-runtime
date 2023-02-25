@@ -3,7 +3,6 @@
 package runtime.atn;
 
 import runtime.Recognizer;
-import runtime.misc.DoubleKeyMap;
 import runtime.misc.MurmurHash;
 
 import java.util.Objects;
