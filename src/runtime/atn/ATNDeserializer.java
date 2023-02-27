@@ -3,7 +3,6 @@
 package runtime.atn;
 
 import runtime.Token;
-import runtime.misc.IntegerList;
 import runtime.misc.IntervalSet;
 import runtime.misc.Pair;
 
@@ -459,18 +458,6 @@ public class ATNDeserializer {
 		}
 	}
 
-	protected static int toInt(char c) {
-		return c;
-	}
-
-	protected static int toInt32(char[] data, int offset) {
-		return (int)data[offset] | ((int)data[offset + 1] << 16);
-	}
-
-	protected static int toInt32(int[] data, int offset) {
-		return data[offset] | (data[offset + 1] << 16);
-	}
-
 	protected Transition edgeFactory(ATN atn,
 										 int type, int src, int trg,
 										 int arg1, int arg2, int arg3,
@@ -568,29 +555,6 @@ public class ATNDeserializer {
 		}
 	}
 
-	
-	public static IntegerList encodeIntsWith16BitWords(IntegerList data) {
-		IntegerList data16 = new IntegerList((int)(data.size()*1.5));
-		for (int i = 0; i < data.size(); i++) {
-			int v = data.get(i);
-			if ( v==-1 ) {
-				data16.add(0xFFFF);
-				data16.add(0xFFFF);
-			}
-			else if (v <= 0x7FFF) {
-				data16.add(v);
-			}
-			else {
-				if ( v>=0x7FFF_FFFF ) {
-					throw new UnsupportedOperationException("Serialized ATN data element["+i+"] = "+v+" doesn't fit in 31 bits");
-				}
-				v = v & 0x7FFF_FFFF;
-				data16.add((v >> 16) | 0x8000);
-				data16.add((v & 0xFFFF));
-			}
-		}
-		return data16;
-	}
 
 	public static int[] decodeIntsEncodedAs16BitWords(char[] data16) {
 		return decodeIntsEncodedAs16BitWords(data16, false);
