@@ -1,0 +1,12 @@
+Id=1
+Number=2
+Add=3
+Sub=4
+Mul=5
+Div=6
+WS=7
+Comment=8
+'+'=3
+'-'=4
+'*'=5
+'/'=6
