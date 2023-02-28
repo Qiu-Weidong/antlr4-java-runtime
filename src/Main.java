@@ -1,5 +1,6 @@
 import examples.dot.DotLexer;
 import examples.dot.DotParser;
+import examples.lexer.HelloLexer;
 import runtime.*;
 import runtime.atn.ATNDeserializer;
 import runtime.misc.Interval;
@@ -7,7 +8,6 @@ import runtime.misc.IntervalSet;
 import runtime.misc.MurmurHash;
 import runtime.tree.ParseTree;
 
-import examples.lexer.HelloLexer;
 
 // 用作 Map 的主鍵的類 ATNConfig ATNState DFAState PredictionContext
 public class Main {
@@ -32,14 +32,15 @@ public class Main {
 //            System.out.println(tokens.get(i).toString(lexer.getVocabulary()));
 //        }
 
-        String input = "\u0004\u0000\b@\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0002\u0001";
-        ATNDeserializer deserializer = new ATNDeserializer();
-        int[] array = ATNDeserializer.decodeIntsEncodedAs16BitWords(input.toCharArray());
 
-        for(int x : array) {
-            System.out.print(Integer.toHexString(x));
-            System.out.print(", ");
+        CharStream stream = CharStreams.fromString("hello world 123456 h1091 ppp UIa7 4892");
+        HelloLexer lexer = new HelloLexer(stream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        for(int i=0; i<tokens.getNumberOfOnChannelTokens(); i++)
+        {
+            System.out.println(tokens.get(i).toString(lexer.getVocabulary()));
         }
+
 
     }
 }
