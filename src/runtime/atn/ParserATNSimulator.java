@@ -896,26 +896,7 @@ public class ParserATNSimulator extends ATNSimulator {
 		return reach;
 	}
 
-	/**
-	 * Return a configuration set containing only the configurations from
-	 * {@code configs} which are in a {@link RuleStopState}. If all
-	 * configurations in {@code configs} are already in a rule stop state, this
-	 * method simply returns {@code configs}.
-	 *
-	 * <p>When {@code lookToEndOfRule} is true, this method uses
-	 * {@link ATN#nextTokens} for each configuration in {@code configs} which is
-	 * not already in a rule stop state to see if a rule stop state is reachable
-	 * from the configuration via epsilon-only transitions.</p>
-	 *
-	 * @param configs the configuration set to update
-	 * @param lookToEndOfRule when true, this method checks for rule stop states
-	 * reachable by epsilon-only transitions from each configuration in
-	 * {@code configs}.
-	 *
-	 * @return {@code configs} if all configurations in {@code configs} are in a
-	 * rule stop state, otherwise return a new configuration set containing only
-	 * the configurations from {@code configs} which are in a rule stop state
-	 */
+
 	protected ATNConfigSet removeAllConfigsNotInRuleStopState(ATNConfigSet configs, boolean lookToEndOfRule) {
 		if (PredictionMode.allConfigsInRuleStopStates(configs)) {
 			return configs;

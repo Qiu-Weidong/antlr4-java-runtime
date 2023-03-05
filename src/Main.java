@@ -33,7 +33,7 @@ public class Main {
 //        }
 
 
-        CharStream stream = CharStreams.fromString("hello world 123456 h1091 ppp UIa7 4892");
+        CharStream stream = CharStreams.fromString("hello world 123456      89231 GH");
         HelloLexer lexer = new HelloLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         for(int i=0; i<tokens.getNumberOfOnChannelTokens(); i++)

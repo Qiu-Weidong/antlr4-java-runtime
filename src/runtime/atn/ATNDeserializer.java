@@ -38,6 +38,7 @@ public class ATNDeserializer {
 	}
 
 	public ATN deserialize(int[] data) {
+//		System.out.println(Arrays.toString(data));
 		int p = 0;
 		int version = data[p++];
 		if (version != SERIALIZED_VERSION) {
@@ -76,7 +77,7 @@ public class ATNDeserializer {
 			atn.addState(s);
 		}
 
-
+		boolean b = 1 == 1;
 		for (Pair<LoopEndState, Integer> pair : loopBackStateNumbers) {
 			pair.a.loopBackState = atn.states.get(pair.b);
 		}
@@ -272,11 +273,11 @@ public class ATNDeserializer {
 
 				bypassStop.startState = bypassStart;
 
-				ATNState endState;
+				ATNState endState = null;
 				Transition excludeTransition = null;
 				if (atn.ruleToStartState[i].isLeftRecursiveRule) {
 
-					endState = null;
+//					endState = null;
 					for (ATNState state : atn.states) {
 						if (state.ruleIndex != i) {
 							continue;
@@ -500,6 +501,7 @@ public class ATNDeserializer {
 	}
 
 	protected ATNState stateFactory(int type, int ruleIndex) {
+//		System.out.println(type);
 		ATNState s;
 		switch (type) {
 			case ATNState.INVALID_TYPE: return null;
