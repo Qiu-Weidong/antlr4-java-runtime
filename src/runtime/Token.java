@@ -51,4 +51,6 @@ public interface Token {
 
 
 	CharStream getInputStream();
+
+    String toString(Vocabulary vocabulary);
 }

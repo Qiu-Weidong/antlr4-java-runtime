@@ -3,9 +3,6 @@
 package runtime;
 
 import runtime.atn.ATNConfigSet;
-import runtime.atn.DecisionInfo;
-import runtime.atn.ParserATNSimulator;
-import runtime.atn.PredictionMode;
 import runtime.dfa.DFA;
 
 import java.util.BitSet;

@@ -3,7 +3,6 @@
 package runtime.atn;
 
 import runtime.Token;
-import runtime.misc.IntegerList;
 import runtime.misc.IntervalSet;
 import runtime.misc.Pair;
 
@@ -39,6 +38,7 @@ public class ATNDeserializer {
 	}
 
 	public ATN deserialize(int[] data) {
+//		System.out.println(Arrays.toString(data));
 		int p = 0;
 		int version = data[p++];
 		if (version != SERIALIZED_VERSION) {
@@ -77,7 +77,7 @@ public class ATNDeserializer {
 			atn.addState(s);
 		}
 
-
+		boolean b = 1 == 1;
 		for (Pair<LoopEndState, Integer> pair : loopBackStateNumbers) {
 			pair.a.loopBackState = atn.states.get(pair.b);
 		}
@@ -281,11 +281,11 @@ public class ATNDeserializer {
 
 				bypassStop.startState = bypassStart;
 
-				ATNState endState;
+				ATNState endState = null;
 				Transition excludeTransition = null;
 				if (atn.ruleToStartState[i].isLeftRecursiveRule) {
 
-					endState = null;
+//					endState = null;
 					for (ATNState state : atn.states) {
 						if (state.ruleIndex != i) {
 							continue;
@@ -482,18 +482,6 @@ public class ATNDeserializer {
 		}
 	}
 
-	protected static int toInt(char c) {
-		return c;
-	}
-
-	protected static int toInt32(char[] data, int offset) {
-		return (int)data[offset] | ((int)data[offset + 1] << 16);
-	}
-
-	protected static int toInt32(int[] data, int offset) {
-		return data[offset] | (data[offset + 1] << 16);
-	}
-
 	protected Transition edgeFactory(ATN atn,
 										 int type, int src, int trg,
 										 int arg1, int arg2, int arg3,
@@ -536,6 +524,7 @@ public class ATNDeserializer {
 	}
 
 	protected ATNState stateFactory(int type, int ruleIndex) {
+//		System.out.println(type);
 		ATNState s;
 		switch (type) {
 			case ATNState.INVALID_TYPE: return null;
@@ -591,29 +580,6 @@ public class ATNDeserializer {
 		}
 	}
 
-	
-	public static IntegerList encodeIntsWith16BitWords(IntegerList data) {
-		IntegerList data16 = new IntegerList((int)(data.size()*1.5));
-		for (int i = 0; i < data.size(); i++) {
-			int v = data.get(i);
-			if ( v==-1 ) {
-				data16.add(0xFFFF);
-				data16.add(0xFFFF);
-			}
-			else if (v <= 0x7FFF) {
-				data16.add(v);
-			}
-			else {
-				if ( v>=0x7FFF_FFFF ) {
-					throw new UnsupportedOperationException("Serialized ATN data element["+i+"] = "+v+" doesn't fit in 31 bits");
-				}
-				v = v & 0x7FFF_FFFF;
-				data16.add((v >> 16) | 0x8000);
-				data16.add((v & 0xFFFF));
-			}
-		}
-		return data16;
-	}
 
 	public static int[] decodeIntsEncodedAs16BitWords(char[] data16) {
 		return decodeIntsEncodedAs16BitWords(data16, false);

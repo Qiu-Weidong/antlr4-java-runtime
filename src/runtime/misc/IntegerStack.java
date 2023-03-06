@@ -7,14 +7,6 @@ public class IntegerStack extends IntegerList {
 	public IntegerStack() {
 	}
 
-	public IntegerStack(int capacity) {
-		super(capacity);
-	}
-
-	public IntegerStack(IntegerStack list) {
-		super(list);
-	}
-
 	public final void push(int value) {
 		add(value);
 	}

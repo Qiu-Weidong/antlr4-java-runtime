@@ -2,21 +2,12 @@
 
 package runtime.tree;
 
-import runtime.CommonToken;
-import runtime.Parser;
-import runtime.ParserRuleContext;
-import runtime.RuleContext;
-import runtime.Token;
+import runtime.*;
 import runtime.atn.ATN;
 import runtime.misc.Interval;
-import runtime.misc.Predicate;
 import runtime.misc.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 public class Trees {
@@ -203,19 +194,6 @@ public class Trees {
 		}
 	}
 
-	
-	public static Tree findNodeSuchThat(Tree t, Predicate<Tree> pred) {
-		if ( pred.test(t) ) return t;
-
-		if ( t==null ) return null;
-
-		int n = t.getChildCount();
-		for (int i = 0 ; i < n ; i++){
-			Tree u = findNodeSuchThat(t.getChild(i), pred);
-			if ( u!=null ) return u;
-		}
-		return null;
-	}
 
 	private Trees() {
 	}

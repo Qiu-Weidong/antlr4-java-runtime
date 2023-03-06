@@ -74,10 +74,6 @@ public class ATN {
 		states.add(state);
 	}
 
-	public void removeState(ATNState state) {
-		states.set(state.stateNumber, null);
-	}
-
 	public int defineDecisionState(DecisionState s) {
 		decisionToState.add(s);
 		s.decision = decisionToState.size()-1;

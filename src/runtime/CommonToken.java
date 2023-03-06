@@ -164,10 +164,10 @@ public class CommonToken implements WritableToken, Serializable {
 
 	@Override
 	public String toString() {
-		return toString(null);
+		return toString((Vocabulary) null);
 	}
 
-	public String toString(Recognizer<?, ?> r) {
+	public String toString(Vocabulary vocabulary) {
 		String channelStr = "";
 		if ( channel>0 ) {
 			channelStr=",channel="+channel;
@@ -182,8 +182,8 @@ public class CommonToken implements WritableToken, Serializable {
 			txt = "<no text>";
 		}
 		String typeString = String.valueOf(type);
-		if ( r!=null ) {
-			typeString = r.getVocabulary().getDisplayName(type);
+		if ( vocabulary!=null ) {
+			typeString = vocabulary.getDisplayName(type);
 		}
 		return "[@"+getTokenIndex()+","+start+":"+stop+"='"+txt+"',<"+typeString+">"+channelStr+","+line+":"+getCharPositionInLine()+"]";
 	}
