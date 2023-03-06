@@ -259,6 +259,14 @@ public class ATNDeserializer {
 				atn.ruleToTokenType[i] = atn.maxTokenType + i + 1;
 			}
 
+
+
+
+
+
+
+
+
 			for (int i = 0; i < atn.ruleToStartState.length; i++) {
 				BasicBlockStartState bypassStart = new BasicBlockStartState();
 				bypassStart.ruleIndex = i;
@@ -336,6 +344,21 @@ public class ATNDeserializer {
 				matchState.addTransition(new AtomTransition(bypassStop, atn.ruleToTokenType[i]));
 				bypassStart.addTransition(new EpsilonTransition(matchState));
 			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			if (deserializationOptions.isVerifyATN()) {
 

@@ -1,5 +1,5 @@
-import examples.DotLexer;
-import examples.DotParser;
+import examples.dot.DotLexer;
+import examples.dot.DotParser;
 import runtime.CharStream;
 import runtime.CharStreams;
 import runtime.CommonTokenStream;

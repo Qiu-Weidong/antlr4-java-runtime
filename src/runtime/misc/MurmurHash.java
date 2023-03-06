@@ -28,6 +28,7 @@ public final class MurmurHash {
 
 		int k = value;
 		k = k * c1;
+		// 用 0 填充空位
 		k = (k << r1) | (k >>> (32 - r1));
 		k = k * c2;
 
