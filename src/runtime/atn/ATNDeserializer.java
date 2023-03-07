@@ -224,11 +224,11 @@ public class ATNDeserializer {
 
 
 		int ndecisions = data[p++];
-		for (int i=1; i<=ndecisions; i++) {
+		for (int i=0; i<ndecisions; i++) {
 			int s = data[p++];
 			DecisionState decState = (DecisionState)atn.states.get(s);
 			atn.decisionToState.add(decState);
-			decState.decision = i-1;
+			decState.decision = i;
 		}
 
 

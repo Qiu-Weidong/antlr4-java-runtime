@@ -38,6 +38,7 @@ public class IntervalSet implements IntSet {
 		addAll(set);
 	}
 
+	// 将每个整数变为 区间 并添加
 	public IntervalSet(int... els) {
 		if ( els==null ) {
 			intervals = new ArrayList<Interval>(2);
@@ -49,14 +50,14 @@ public class IntervalSet implements IntSet {
 	}
 
 	
-
+	// [ a..a ]
     public static IntervalSet of(int a) {
 		IntervalSet s = new IntervalSet();
         s.add(a);
         return s;
     }
 
-    
+    // [ a..b ]
 	public static IntervalSet of(int a, int b) {
 		IntervalSet s = new IntervalSet();
 		s.add(a,b);
@@ -68,7 +69,7 @@ public class IntervalSet implements IntSet {
 		intervals.clear();
 	}
 
-    
+    // add 是添加 el..el
     @Override
     public void add(int el) {
         if ( readonly ) throw new IllegalStateException("can't alter readonly IntervalSet");
@@ -81,7 +82,7 @@ public class IntervalSet implements IntSet {
 		return null;
 	}
 
-
+	// 向区间集合中添加一个区间
 	protected void add(Interval addition) {
         if ( readonly ) throw new IllegalStateException("can't alter readonly IntervalSet");
 
@@ -128,21 +129,21 @@ public class IntervalSet implements IntSet {
 		intervals.add(addition);
 	}
 
-	
+	// 求并集
 	public static IntervalSet or(IntervalSet[] sets) {
 		IntervalSet r = new IntervalSet();
 		for (IntervalSet s : sets) r.addAll(s);
 		return r;
 	}
 
+	// 如果参数是区间集合，则将区间全部添加，如果是整数集合，则将整数作为 单区间添加
 	@Override
 	public IntervalSet addAll(IntSet set) {
 		if ( set==null ) {
 			return this;
 		}
 
-		if (set instanceof IntervalSet) {
-			IntervalSet other = (IntervalSet)set;
+		if (set instanceof IntervalSet other) {
 
 			int n = other.intervals.size();
 			for (int i = 0; i < n; i++) {
@@ -349,7 +350,7 @@ public class IntervalSet implements IntSet {
 		return intersection;
 	}
 
-    
+    // 判断区间是否包含某个点
     @Override
     public boolean contains(int el) {
 		int n = intervals.size();
@@ -388,10 +389,6 @@ public class IntervalSet implements IntSet {
 		return intervals.get(0).a;
 	}
 
-    
-    public List<Interval> getIntervals() {
-        return intervals;
-    }
 
 	@Override
 	public int hashCode() {
@@ -511,21 +508,7 @@ public class IntervalSet implements IntSet {
 		return n;
     }
 
-	public IntegerList toIntegerList() {
-		IntegerList values = new IntegerList(size());
-		int n = intervals.size();
-		for (int i = 0; i < n; i++) {
-			Interval I = intervals.get(i);
-			int a = I.a;
-			int b = I.b;
-			for (int v=a; v<=b; v++) {
-				values.add(v);
-			}
-		}
-		return values;
-	}
-
-    @Override
+	@Override
     public List<Integer> toList() {
 		List<Integer> values = new ArrayList<Integer>();
 		int n = intervals.size();
@@ -540,22 +523,6 @@ public class IntervalSet implements IntSet {
 		return values;
 	}
 
-	public Set<Integer> toSet() {
-		Set<Integer> s = new HashSet<Integer>();
-		for (Interval I : intervals) {
-			int a = I.a;
-			int b = I.b;
-			for (int v=a; v<=b; v++) {
-				s.add(v);
-			}
-		}
-		return s;
-	}
-
-
-	public int[] toArray() {
-		return toIntegerList().toArray();
-	}
 
 	@Override
 	public void remove(int el) {

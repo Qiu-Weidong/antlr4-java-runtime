@@ -25,37 +25,6 @@ public abstract class Transition {
 	public static final int PRECEDENCE		= 10;
 
 
-	public static final List<String> serializationNames =
-		Collections.unmodifiableList(Arrays.asList(
-			"INVALID",
-			"EPSILON",
-			"RANGE",
-			"RULE",
-			"PREDICATE",
-			"ATOM",
-			"ACTION",
-			"SET",
-			"NOT_SET",
-			"WILDCARD",
-			"PRECEDENCE"
-		));
-
-	public static final Map<Class<? extends Transition>, Integer> serializationTypes =
-		Collections.unmodifiableMap(new HashMap<Class<? extends Transition>, Integer>() {{
-			put(EpsilonTransition.class, EPSILON);
-			put(RangeTransition.class, RANGE);
-			put(RuleTransition.class, RULE);
-			put(PredicateTransition.class, PREDICATE);
-			put(AtomTransition.class, ATOM);
-			put(ActionTransition.class, ACTION);
-			put(SetTransition.class, SET);
-			put(NotSetTransition.class, NOT_SET);
-			put(WildcardTransition.class, WILDCARD);
-			put(PrecedencePredicateTransition.class, PRECEDENCE);
-		}});
-
-	
-
 	public ATNState target;
 
 	protected Transition(ATNState target) {
