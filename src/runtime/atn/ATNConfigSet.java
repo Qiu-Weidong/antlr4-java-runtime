@@ -236,14 +236,6 @@ public class ATNConfigSet implements Set<ATNConfig> {
 		return configLookup.contains(o);
 	}
 
-	public boolean containsFast(ATNConfig obj) {
-		if (configLookup == null) {
-			throw new UnsupportedOperationException("This method is not implemented for readonly sets.");
-		}
-
-		return configLookup.containsFast(obj);
-	}
-
 	@Override
 	public Iterator<ATNConfig> iterator() {
 		return configs.iterator();

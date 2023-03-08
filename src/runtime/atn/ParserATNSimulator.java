@@ -1439,7 +1439,7 @@ public class ParserATNSimulator extends ATNSimulator {
 											int depth,
 											boolean treatEofAsEpsilon)
 	{
-		if ( debug ) System.out.println("closure("+config.toString(parser,true)+")");
+		if ( debug ) System.out.println("closure("+config.toString(true)+")");
 
 		if ( config.state instanceof RuleStopState ) {
 			// We hit rule end. If we have context info, use it
@@ -1993,7 +1993,7 @@ public class ParserATNSimulator extends ATNSimulator {
 					trans = (not?"~":"")+"Set "+st.set.toString();
 				}
 			}
-			System.err.println(c.toString(parser, true)+":"+trans);
+			System.err.println(c.toString(true)+":"+trans);
 		}
 	}
 

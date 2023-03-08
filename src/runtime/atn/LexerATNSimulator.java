@@ -279,7 +279,7 @@ public class LexerATNSimulator extends ATNSimulator {
 			}
 
 			if ( debug ) {
-				System.out.format(Locale.getDefault(), "testing %s at %s\n", getTokenName(t), c.toString(recog, true));
+				System.out.format(Locale.getDefault(), "testing %s at %s\n", getTokenName(t), c.toString(true));
 			}
 
 			int n = c.state.getNumberOfTransitions();
@@ -347,7 +347,7 @@ public class LexerATNSimulator extends ATNSimulator {
 	
 	protected boolean closure(CharStream input, LexerATNConfig config, ATNConfigSet configs, boolean currentAltReachedAcceptState, boolean speculative, boolean treatEofAsEpsilon) {
 		if ( debug ) {
-			System.out.println("closure("+config.toString(recog, true)+")");
+			System.out.println("closure("+config.toString(true)+")");
 		}
 
 		if ( config.state instanceof RuleStopState ) {

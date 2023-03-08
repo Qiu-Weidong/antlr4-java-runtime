@@ -2,7 +2,6 @@
 
 package runtime.atn;
 
-import runtime.Recognizer;
 import runtime.misc.MurmurHash;
 
 import java.util.Objects;
@@ -26,14 +25,6 @@ public class ATNConfig {
 
 
     public final SemanticContext semanticContext;
-
-	public ATNConfig(ATNConfig old) {
-		this.state = old.state;
-		this.alt = old.alt;
-		this.context = old.context;
-		this.semanticContext = old.semanticContext;
-		this.reachesIntoOuterContext = old.reachesIntoOuterContext;
-	}
 
 	public ATNConfig(ATNState state,
 					 int alt,
@@ -142,10 +133,10 @@ public class ATNConfig {
 
 	@Override
 	public String toString() {
-		return toString(null, true);
+		return toString(true);
 	}
 
-	public String toString(Recognizer<?, ?> recog, boolean showAlt) {
+	public String toString(boolean showAlt) {
 		StringBuilder buf = new StringBuilder();
 
 

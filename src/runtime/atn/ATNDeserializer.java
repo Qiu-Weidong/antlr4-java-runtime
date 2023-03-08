@@ -77,7 +77,6 @@ public class ATNDeserializer {
 			atn.addState(s);
 		}
 
-		boolean b = 1 == 1;
 		for (Pair<LoopEndState, Integer> pair : loopBackStateNumbers) {
 			pair.a.loopBackState = atn.states.get(pair.b);
 		}

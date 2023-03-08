@@ -2,12 +2,9 @@
 
 package runtime.dfa;
 
-import runtime.Token;
-import runtime.atn.ATN;
 import runtime.atn.ATNConfig;
 import runtime.atn.ATNConfigSet;
 import runtime.atn.LexerActionExecutor;
-import runtime.atn.ParserATNSimulator;
 import runtime.atn.SemanticContext;
 import runtime.misc.MurmurHash;
 
@@ -54,10 +51,6 @@ public class DFAState {
 			return "("+pred+", "+alt+ ")";
 		}
 	}
-
-	public DFAState() { }
-
-	public DFAState(int stateNumber) { this.stateNumber = stateNumber; }
 
 	public DFAState(ATNConfigSet configs) { this.configs = configs; }
 
