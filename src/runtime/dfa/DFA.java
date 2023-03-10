@@ -92,6 +92,7 @@ public class DFA {
 		synchronized (s0) {
 
 			if (precedence >= s0.edges.length) {
+				// 用 null 填充
 				s0.edges = Arrays.copyOf(s0.edges, precedence + 1);
 			}
 
@@ -102,12 +103,7 @@ public class DFA {
 
 	public List<DFAState> getStates() {
 		List<DFAState> result = new ArrayList<DFAState>(states.keySet());
-		Collections.sort(result, new Comparator<DFAState>() {
-			@Override
-			public int compare(DFAState o1, DFAState o2) {
-				return o1.stateNumber - o2.stateNumber;
-			}
-		});
+		Collections.sort(result, (o1, o2) -> o1.stateNumber - o2.stateNumber);
 
 		return result;
 	}

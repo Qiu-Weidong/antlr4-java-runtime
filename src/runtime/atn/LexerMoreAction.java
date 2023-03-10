@@ -5,7 +5,7 @@ package runtime.atn;
 import runtime.Lexer;
 import runtime.misc.MurmurHash;
 
-
+// 这是一个单例
 public final class LexerMoreAction implements LexerAction {
 	
 	public static final LexerMoreAction INSTANCE = new LexerMoreAction();

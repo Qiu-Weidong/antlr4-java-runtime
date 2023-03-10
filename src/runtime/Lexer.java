@@ -92,7 +92,6 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 
 		int tokenStartMarker = _input.mark();
 		try{
-			outer:
 			while (true) {
 				if (_hitEOF) {
 					emitEOF();
@@ -107,27 +106,24 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 				_text = null;
 				do {
 					_type = Token.INVALID_TYPE;
-//				System.out.println("nextToken line "+tokenStartLine+" at "+((char)input.LA(1))+
-//								   " in mode "+mode+
-//								   " at index "+input.index());
 					int ttype;
 					try {
 						ttype = getInterpreter().match(_input, _mode);
-					}
-					catch (LexerNoViableAltException e) {
-						notifyListeners(e);		// report error
+					} catch (LexerNoViableAltException e) {
+						notifyListeners(e);        // report error
 						recover(e);
 						ttype = SKIP;
 					}
-					if ( _input.LA(1)==IntStream.EOF ) {
+					if (_input.LA(1) == IntStream.EOF) {
 						_hitEOF = true;
 					}
-					if ( _type == Token.INVALID_TYPE ) _type = ttype;
-					if ( _type ==SKIP ) {
-						continue outer;
-					}
-				} while ( _type ==MORE );
-				if ( _token == null ) emit();
+					if (_type == Token.INVALID_TYPE) _type = ttype;
+
+				} while (_type == MORE);
+				if (_type == SKIP) {
+					continue;
+				}
+				if (_token == null) emit();
 				return _token;
 			}
 		}
@@ -198,20 +194,21 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		this._token = token;
 	}
 
-	public Token emit() {
+	public void emit() {
 		Token t = _factory.create(_tokenFactorySourcePair, _type, _text, _channel, _tokenStartCharIndex, getCharIndex()-1,
 								  _tokenStartLine, _tokenStartCharPositionInLine);
 		emit(t);
-		return t;
 	}
 
-	public Token emitEOF() {
+	public void emitEOF() {
 		int cpos = getCharPositionInLine();
 		int line = getLine();
-		Token eof = _factory.create(_tokenFactorySourcePair, Token.EOF, null, Token.DEFAULT_CHANNEL, _input.index(), _input.index()-1,
+		Token eof = _factory.create(_tokenFactorySourcePair, Token.EOF,
+				null, Token.DEFAULT_CHANNEL,
+				_input.index(),
+				_input.index()-1,
 									line, cpos);
 		emit(eof);
-		return eof;
 	}
 
 	@Override
@@ -327,16 +324,5 @@ public abstract class Lexer extends Recognizer<Integer, LexerATNSimulator>
 		return s;
 	}
 
-	public String getCharErrorDisplay(int c) {
-		String s = getErrorDisplay(c);
-		return "'"+s+"'";
-	}
 
-	
-	public void recover(RecognitionException re) {
-		//System.out.println("consuming char "+(char)input.LA(1)+" during recovery");
-		//re.printStackTrace();
-		// TODO: Do we lose character or line position information?
-		_input.consume();
-	}
 }

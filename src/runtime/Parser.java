@@ -28,49 +28,6 @@ import java.util.List;
 
 
 public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
-	public class TraceListener implements ParseTreeListener {
-		@Override
-		public void enterEveryRule(ParserRuleContext ctx) {
-			System.out.println("enter   " + getRuleNames()[ctx.getRuleIndex()] +
-							   ", LT(1)=" + _input.LT(1).getText());
-		}
-
-		@Override
-		public void visitTerminal(TerminalNode node) {
-			System.out.println("consume "+node.getSymbol()+" rule "+
-							   getRuleNames()[_ctx.getRuleIndex()]);
-		}
-
-		@Override
-		public void visitErrorNode(ErrorNode node) {
-		}
-
-		@Override
-		public void exitEveryRule(ParserRuleContext ctx) {
-			System.out.println("exit    "+getRuleNames()[ctx.getRuleIndex()]+
-							   ", LT(1)="+_input.LT(1).getText());
-		}
-	}
-
-	public static class TrimToSizeListener implements ParseTreeListener {
-		public static final TrimToSizeListener INSTANCE = new TrimToSizeListener();
-
-		@Override
-		public void enterEveryRule(ParserRuleContext ctx) { }
-
-		@Override
-		public void visitTerminal(TerminalNode node) { }
-
-		@Override
-		public void visitErrorNode(ErrorNode node) {	}
-
-		@Override
-		public void exitEveryRule(ParserRuleContext ctx) {
-			if (ctx.children instanceof ArrayList) {
-				((ArrayList<?>)ctx.children).trimToSize();
-			}
-		}
-	}
 
 
 	private ATN bypassAltsAtnCache;
@@ -95,10 +52,6 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 	protected boolean _buildParseTrees = true;
 
 
-
-	private TraceListener _tracer;
-
-
 	protected List<ParseTreeListener> _parseListeners;
 
 
@@ -118,7 +71,7 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		_ctx = null;
 		_syntaxErrors = 0;
 		matchedEOF = false;
-		setTrace(false);
+//		setTrace(false);
 		_precedenceStack.clear();
 		_precedenceStack.push(0);
 		ATNSimulator interpreter = getInterpreter();
@@ -175,22 +128,6 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 	
 	public boolean getBuildParseTree() {
 		return _buildParseTrees;
-	}
-
-	
-	public void setTrimParseTree(boolean trimParseTrees) {
-		if (trimParseTrees) {
-			if (getTrimParseTree()) return;
-			addParseListener(TrimToSizeListener.INSTANCE);
-		}
-		else {
-			removeParseListener(TrimToSizeListener.INSTANCE);
-		}
-	}
-
-	
-	public boolean getTrimParseTree() {
-		return getParseListeners().contains(TrimToSizeListener.INSTANCE);
 	}
 
 
@@ -504,13 +441,8 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		return precedence >= _precedenceStack.peek();
 	}
 
-	public boolean inContext(String context) {
-		// TODO: useful in parser?
-		return false;
-	}
 
-	
-    public boolean isExpectedToken(int symbol) {
+	public boolean isExpectedToken(int symbol) {
 //   		return getInterpreter().atn.nextTokens(_ctx);
         ATN atn = getInterpreter().atn;
 		ParserRuleContext ctx = _ctx;
@@ -628,39 +560,6 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 		return null;
 	}
 
-	
-	public void setProfile(boolean profile) {
-		ParserATNSimulator interp = getInterpreter();
-		PredictionMode saveMode = interp.getPredictionMode();
-		if ( profile ) {
-			if ( !(interp instanceof ProfilingATNSimulator) ) {
-				setInterpreter(new ProfilingATNSimulator(this));
-			}
-		}
-		else if ( interp instanceof ProfilingATNSimulator ) {
-			ParserATNSimulator sim =
-				new ParserATNSimulator(this, getATN(), interp.decisionToDFA, interp.getSharedContextCache());
-			setInterpreter(sim);
-		}
-		getInterpreter().setPredictionMode(saveMode);
-	}
 
-	
-	public void setTrace(boolean trace) {
-		if ( !trace ) {
-			removeParseListener(_tracer);
-			_tracer = null;
-		}
-		else {
-			if ( _tracer!=null ) removeParseListener(_tracer);
-			else _tracer = new TraceListener();
-			addParseListener(_tracer);
-		}
-	}
-
-	
-	public boolean isTrace() {
-		return _tracer != null;
-	}
 }
 

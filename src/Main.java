@@ -3,11 +3,15 @@ import examples.dot.DotParser;
 
 import examples.lexer.HelloLexer;
 import runtime.*;
+import runtime.atn.ATNConfigSet;
 import runtime.atn.ATNDeserializer;
+import runtime.dfa.DFAState;
 import runtime.misc.Interval;
 import runtime.misc.IntervalSet;
 import runtime.misc.MurmurHash;
 import runtime.tree.ParseTree;
+
+import java.util.Arrays;
 
 
 // 用作 Map 的主鍵的類 ATNConfig ATNState DFAState PredictionContext
@@ -41,6 +45,8 @@ public class Main {
         {
             System.out.println(tokens.get(i).toString(lexer.getVocabulary()));
         }
+
+
 
 
     }

@@ -29,23 +29,6 @@ public abstract class ATNState {
 	public static final int PLUS_LOOP_BACK = 11;
 	public static final int LOOP_END = 12;
 
-	public static final List<String> serializationNames =
-		Collections.unmodifiableList(Arrays.asList(
-			"INVALID",
-			"BASIC",
-			"RULE_START",
-			"BLOCK_START",
-			"PLUS_BLOCK_START",
-			"STAR_BLOCK_START",
-			"TOKEN_START",
-			"RULE_STOP",
-			"BLOCK_END",
-			"STAR_LOOP_BACK",
-			"STAR_LOOP_ENTRY",
-			"PLUS_LOOP_BACK",
-			"LOOP_END"
-		));
-
 	public static final int INVALID_STATE_NUMBER = -1;
 
     

@@ -1,14 +1,13 @@
 // Generated from java-escape by ANTLR 4.11.1
 
 package examples.lexer;
-import runtime.Lexer;
-import runtime.CharStream;
-import runtime.Token;
-import runtime.TokenStream;
+
 import runtime.*;
-import runtime.atn.*;
+import runtime.atn.ATN;
+import runtime.atn.ATNDeserializer;
+import runtime.atn.LexerATNSimulator;
+import runtime.atn.PredictionContextCache;
 import runtime.dfa.DFA;
-import runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class HelloLexer extends Lexer {
