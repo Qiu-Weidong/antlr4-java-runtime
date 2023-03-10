@@ -53,11 +53,6 @@ public class LexerInterpreter extends Lexer {
 		return atn;
 	}
 
-	@Override
-	public String getGrammarFileName() {
-		return grammarFileName;
-	}
-
     @Override
 	public String[] getRuleNames() {
 		return ruleNames;
@@ -79,6 +74,6 @@ public class LexerInterpreter extends Lexer {
 			return vocabulary;
 		}
 
-		return super.getVocabulary();
+		return null;
 	}
 }

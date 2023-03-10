@@ -28,25 +28,6 @@ public class ParserRuleContext extends RuleContext {
 
 	public ParserRuleContext() { }
 
-	
-	public void copyFrom(ParserRuleContext ctx) {
-		this.parent = ctx.parent;
-		this.invokingState = ctx.invokingState;
-
-		this.start = ctx.start;
-		this.stop = ctx.stop;
-
-		// copy any error nodes to alt label node
-		if ( ctx.children!=null ) {
-			this.children = new ArrayList<>();
-			// reset parent pointer for any error nodes
-			for (ParseTree child : ctx.children) {
-				if ( child instanceof ErrorNode ) {
-					addChild((ErrorNode)child);
-				}
-			}
-		}
-	}
 
 	public ParserRuleContext(ParserRuleContext parent, int invokingStateNumber) {
 		super(parent, invokingStateNumber);

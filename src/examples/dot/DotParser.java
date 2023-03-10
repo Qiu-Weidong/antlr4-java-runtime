@@ -56,10 +56,7 @@ public class DotParser extends Parser {
 		return VOCABULARY;
 	}
 
-	@Override
-	public String getGrammarFileName() { return "java-escape"; }
-
-	@Override
+    @Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override

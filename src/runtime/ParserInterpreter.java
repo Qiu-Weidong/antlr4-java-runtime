@@ -95,12 +95,7 @@ public class ParserInterpreter extends Parser {
 		return ruleNames;
 	}
 
-	@Override
-	public String getGrammarFileName() {
-		return grammarFileName;
-	}
 
-	
 	public ParserRuleContext parse(int startRuleIndex) {
 		RuleStartState startRuleStartState = atn.ruleToStartState[startRuleIndex];
 

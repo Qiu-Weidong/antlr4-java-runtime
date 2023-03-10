@@ -6,10 +6,7 @@ import runtime.atn.ATNDeserializationOptions;
 import runtime.atn.ATNDeserializer;
 import runtime.atn.ATNSimulator;
 import runtime.atn.ATNState;
-import runtime.atn.ParseInfo;
 import runtime.atn.ParserATNSimulator;
-import runtime.atn.PredictionMode;
-import runtime.atn.ProfilingATNSimulator;
 import runtime.atn.RuleTransition;
 import runtime.dfa.DFA;
 import runtime.misc.IntegerStack;
@@ -488,12 +485,6 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
    		return atn.nextTokens(s);
    	}
 
-	
-	public int getRuleIndex(String ruleName) {
-		Integer ruleIndex = getRuleIndexMap().get(ruleName);
-		if ( ruleIndex!=null ) return ruleIndex;
-		return -1;
-	}
 
 	public ParserRuleContext getRuleContext() { return _ctx; }
 
@@ -549,15 +540,6 @@ public abstract class Parser extends Recognizer<Token, ParserATNSimulator> {
 
 	public String getSourceName() {
 		return _input.getSourceName();
-	}
-
-	@Override
-	public ParseInfo getParseInfo() {
-		ParserATNSimulator interp = getInterpreter();
-		if (interp instanceof ProfilingATNSimulator) {
-			return new ParseInfo((ProfilingATNSimulator)interp);
-		}
-		return null;
 	}
 
 

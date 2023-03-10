@@ -36,39 +36,6 @@ public class VocabularyImpl implements Vocabulary {
 	}
 
 
-	public static Vocabulary fromTokenNames(String[] tokenNames) {
-		if (tokenNames == null || tokenNames.length == 0) {
-			return EMPTY_VOCABULARY;
-		}
-
-		String[] literalNames = Arrays.copyOf(tokenNames, tokenNames.length);
-		String[] symbolicNames = Arrays.copyOf(tokenNames, tokenNames.length);
-		for (int i = 0; i < tokenNames.length; i++) {
-			String tokenName = tokenNames[i];
-			if (tokenName == null) {
-				continue;
-			}
-
-			if (!tokenName.isEmpty()) {
-				char firstChar = tokenName.charAt(0);
-				if (firstChar == '\'') {
-					symbolicNames[i] = null;
-					continue;
-				}
-				else if (Character.isUpperCase(firstChar)) {
-					literalNames[i] = null;
-					continue;
-				}
-			}
-
-
-			literalNames[i] = null;
-			symbolicNames[i] = null;
-		}
-
-		return new VocabularyImpl(literalNames, symbolicNames, tokenNames);
-	}
-
 	@Override
 	public int getMaxTokenType() {
 		return maxTokenType;
@@ -119,16 +86,4 @@ public class VocabularyImpl implements Vocabulary {
 	}
 
 
-
-	public String[] getLiteralNames() {
-		return literalNames;
-	}
-
-	public String[] getSymbolicNames() {
-		return symbolicNames;
-	}
-
-	public String[] getDisplayNames() {
-		return displayNames;
-	}
 }

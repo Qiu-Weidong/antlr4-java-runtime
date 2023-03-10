@@ -60,10 +60,7 @@ public class HelloLexer extends Lexer {
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	@Override
-	public String getGrammarFileName() { return "Hello.g4"; }
-
-	@Override
+    @Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override

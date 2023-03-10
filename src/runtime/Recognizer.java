@@ -4,26 +4,15 @@ package runtime;
 
 import runtime.atn.ATN;
 import runtime.atn.ATNSimulator;
-import runtime.atn.ParseInfo;
-import runtime.misc.Utils;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	public static final int EOF=-1;
 
-	private static final Map<Vocabulary, Map<String, Integer>> tokenTypeMapCache =
-		new WeakHashMap<Vocabulary, Map<String, Integer>>();
-	private static final Map<String[], Map<String, Integer>> ruleIndexMapCache =
-		new WeakHashMap<String[], Map<String, Integer>>();
 
-
-	private List<ANTLRErrorListener> _listeners =
+	private final List<ANTLRErrorListener> _listeners =
 		new CopyOnWriteArrayList<ANTLRErrorListener>() {{
 			add(ConsoleErrorListener.INSTANCE);
 		}};
@@ -36,62 +25,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	public abstract String[] getRuleNames();
 
 
-	public Vocabulary getVocabulary() {
-//		return VocabularyImpl.fromTokenNames(getTokenNames());
-		return null;
-	}
-
-
-	public Map<String, Integer> getTokenTypeMap() {
-		Vocabulary vocabulary = getVocabulary();
-		synchronized (tokenTypeMapCache) {
-			Map<String, Integer> result = tokenTypeMapCache.get(vocabulary);
-			if (result == null) {
-				result = new HashMap<String, Integer>();
-				for (int i = 0; i <= getATN().maxTokenType; i++) {
-					String literalName = vocabulary.getLiteralName(i);
-					if (literalName != null) {
-						result.put(literalName, i);
-					}
-
-					String symbolicName = vocabulary.getSymbolicName(i);
-					if (symbolicName != null) {
-						result.put(symbolicName, i);
-					}
-				}
-
-				result.put("EOF", Token.EOF);
-				result = Collections.unmodifiableMap(result);
-				tokenTypeMapCache.put(vocabulary, result);
-			}
-
-			return result;
-		}
-	}
-
-
-	public Map<String, Integer> getRuleIndexMap() {
-		String[] ruleNames = getRuleNames();
-		if (ruleNames == null) {
-			throw new UnsupportedOperationException("The current recognizer does not provide a list of rule names.");
-		}
-
-		synchronized (ruleIndexMapCache) {
-			Map<String, Integer> result = ruleIndexMapCache.get(ruleNames);
-			if (result == null) {
-				result = Collections.unmodifiableMap(Utils.toMap(ruleNames));
-				ruleIndexMapCache.put(ruleNames, result);
-			}
-
-			return result;
-		}
-	}
-
-	public int getTokenType(String tokenName) {
-		Integer ttype = getTokenTypeMap().get(tokenName);
-		if ( ttype!=null ) return ttype;
-		return Token.INVALID_TYPE;
-	}
+	public abstract Vocabulary getVocabulary();
 
 
 	public String getSerializedATN() {
@@ -99,19 +33,11 @@ public abstract class Recognizer<Symbol, ATNInterpreter extends ATNSimulator> {
 	}
 
 
-	public abstract String getGrammarFileName();
-
-
 	public abstract ATN getATN();
 
 
 	public ATNInterpreter getInterpreter() {
 		return _interp;
-	}
-
-
-	public ParseInfo getParseInfo() {
-		return null;
 	}
 
 

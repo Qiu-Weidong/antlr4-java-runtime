@@ -65,10 +65,7 @@ public class DotLexer extends Lexer {
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	@Override
-	public String getGrammarFileName() { return "examples/dot/Dot.g4"; }
-
-	@Override
+    @Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override

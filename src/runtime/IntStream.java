@@ -5,10 +5,10 @@ package runtime;
 
 public interface IntStream {
 
-	public static final int EOF = -1;
+	int EOF = -1;
 
 
-	public static final String UNKNOWN_SOURCE_NAME = "<unknown>";
+	String UNKNOWN_SOURCE_NAME = "<unknown>";
 
 
 	void consume();
@@ -33,5 +33,5 @@ public interface IntStream {
 
 	
 
-	public String getSourceName();
+	String getSourceName();
 }
