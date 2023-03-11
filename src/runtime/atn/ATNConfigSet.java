@@ -2,59 +2,14 @@
 
 package runtime.atn;
 
-import runtime.misc.AbstractEqualityComparator;
-import runtime.misc.Array2DHashSet;
 import runtime.misc.DoubleKeyMap;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class ATNConfigSet implements Set<ATNConfig> {
-	
-	public static class ConfigHashSet extends AbstractConfigHashSet {
-		public ConfigHashSet() {
-			super(ConfigEqualityComparator.INSTANCE);
-		}
-	}
 
-	public static final class ConfigEqualityComparator extends AbstractEqualityComparator<ATNConfig> {
-		public static final ConfigEqualityComparator INSTANCE = new ConfigEqualityComparator();
 
-		private ConfigEqualityComparator() {
-		}
-
-		@Override
-		public int hashCode(ATNConfig o) {
-			int hashCode = 7;
-			hashCode = 31 * hashCode + o.state.stateNumber;
-			hashCode = 31 * hashCode + o.alt;
-			hashCode = 31 * hashCode + o.semanticContext.hashCode();
-	        return hashCode;
-		}
-
-		@Override
-		public boolean equals(ATNConfig a, ATNConfig b) {
-			if ( a==b ) return true;
-			if ( a==null || b==null ) return false;
-			return a.state.stateNumber==b.state.stateNumber
-				&& a.alt==b.alt
-				&& a.semanticContext.equals(b.semanticContext);
-		}
-	}
-
-	
-	protected boolean readonly = false;
-
-	
-	public AbstractConfigHashSet configLookup;
-
-	
 	public final ArrayList<ATNConfig> configs = new ArrayList<ATNConfig>(7);
 
 
@@ -71,22 +26,11 @@ public class ATNConfigSet implements Set<ATNConfig> {
 	
 	public final boolean fullCtx;
 
-	private int cachedHashCode = -1;
-
 	public ATNConfigSet(boolean fullCtx) {
-		configLookup = new ConfigHashSet();
+//		configLookup = new ConfigHashSet();
 		this.fullCtx = fullCtx;
 	}
 	public ATNConfigSet() { this(true); }
-
-	public ATNConfigSet(ATNConfigSet old) {
-		this(old.fullCtx);
-		addAll(old);
-		this.uniqueAlt = old.uniqueAlt;
-		this.conflictingAlts = old.conflictingAlts;
-		this.hasSemanticContext = old.hasSemanticContext;
-		this.dipsIntoOuterContext = old.dipsIntoOuterContext;
-	}
 
 	@Override
 	public boolean add(ATNConfig config) {
@@ -98,16 +42,19 @@ public class ATNConfigSet implements Set<ATNConfig> {
 		ATNConfig config,
 		DoubleKeyMap<PredictionContext,PredictionContext,PredictionContext> mergeCache)
 	{
-		if ( readonly ) throw new IllegalStateException("This set is readonly");
+//		if ( readonly ) throw new IllegalStateException("This set is readonly");
 		if ( config.semanticContext != SemanticContext.Empty.Instance ) {
 			hasSemanticContext = true;
 		}
 		if (config.getOuterContextDepth() > 0) {
 			dipsIntoOuterContext = true;
 		}
-		ATNConfig existing = configLookup.getOrAdd(config);
-		if ( existing==config ) {
-			cachedHashCode = -1;
+		ATNConfig existing = null;
+		for(ATNConfig c: configs) {
+			if(c.equals(config)) existing = c;
+		}
+
+		if ( existing==null) {
 			configs.add(config);
 			return true;
 		}
@@ -151,21 +98,11 @@ public class ATNConfigSet implements Set<ATNConfig> {
 		return alts;
 	}
 
-	public List<SemanticContext> getPredicates() {
-		List<SemanticContext> preds = new ArrayList<SemanticContext>();
-		for (ATNConfig c : configs) {
-			if ( c.semanticContext!=SemanticContext.Empty.Instance ) {
-				preds.add(c.semanticContext);
-			}
-		}
-		return preds;
-	}
-
 	public ATNConfig get(int i) { return configs.get(i); }
 
 	public void optimizeConfigs(ATNSimulator interpreter) {
-		if ( readonly ) throw new IllegalStateException("This set is readonly");
-		if ( configLookup.isEmpty() ) return;
+//		if ( readonly ) throw new IllegalStateException("This set is readonly");
+//		if ( configLookup.isEmpty() ) return;
 
 		for (ATNConfig config : configs) {
 
@@ -206,13 +143,13 @@ public class ATNConfigSet implements Set<ATNConfig> {
 
 	@Override
 	public int hashCode() {
-		if (isReadonly()) {
-			if (cachedHashCode == -1) {
-				cachedHashCode = configs.hashCode();
-			}
-
-			return cachedHashCode;
-		}
+//		if (isReadonly()) {
+//			if (cachedHashCode == -1) {
+//				cachedHashCode = configs.hashCode();
+//			}
+//
+//			return cachedHashCode;
+//		}
 
 		return configs.hashCode();
 	}
@@ -229,11 +166,7 @@ public class ATNConfigSet implements Set<ATNConfig> {
 
 	@Override
 	public boolean contains(Object o) {
-		if (configLookup == null) {
-			throw new UnsupportedOperationException("This method is not implemented for readonly sets.");
-		}
-
-		return configLookup.contains(o);
+		throw new UnsupportedOperationException("fuck");
 	}
 
 	@Override
@@ -243,19 +176,9 @@ public class ATNConfigSet implements Set<ATNConfig> {
 
 	@Override
 	public void clear() {
-		if ( readonly ) throw new IllegalStateException("This set is readonly");
+//		if ( readonly ) throw new IllegalStateException("This set is readonly");
 		configs.clear();
-		cachedHashCode = -1;
-		configLookup.clear();
-	}
-
-	public boolean isReadonly() {
-		return readonly;
-	}
-
-	public void setReadonly(boolean readonly) {
-		this.readonly = readonly;
-		configLookup = null;
+		//		configLookup.clear();
 	}
 
 	@Override
@@ -273,12 +196,14 @@ public class ATNConfigSet implements Set<ATNConfig> {
 
 	@Override
 	public ATNConfig[] toArray() {
-		return configLookup.toArray();
+		return new ATNConfig[0];
+//		return configLookup.toArray();
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return configLookup.toArray(a);
+		return a;
+//		return configLookup.toArray(new ATNConfig[0]);
 	}
 
 	@Override
@@ -301,34 +226,4 @@ public class ATNConfigSet implements Set<ATNConfig> {
 		throw new UnsupportedOperationException();
 	}
 
-	public static abstract class AbstractConfigHashSet extends Array2DHashSet<ATNConfig> {
-
-		public AbstractConfigHashSet(AbstractEqualityComparator<? super ATNConfig> comparator) {
-			this(comparator, 16, 2);
-		}
-
-		public AbstractConfigHashSet(AbstractEqualityComparator<? super ATNConfig> comparator, int initialCapacity, int initialBucketCapacity) {
-			super(comparator, initialCapacity, initialBucketCapacity);
-		}
-
-		@Override
-		protected final ATNConfig asElementType(Object o) {
-			if (!(o instanceof ATNConfig)) {
-				return null;
-			}
-
-			return (ATNConfig)o;
-		}
-
-		@Override
-		protected final ATNConfig[][] createBuckets(int capacity) {
-			return new ATNConfig[capacity][];
-		}
-
-		@Override
-		protected final ATNConfig[] createBucket(int capacity) {
-			return new ATNConfig[capacity];
-		}
-
-	}
 }

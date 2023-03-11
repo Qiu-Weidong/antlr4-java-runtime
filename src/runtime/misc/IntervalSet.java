@@ -14,10 +14,7 @@ import java.util.Set;
 
 
 public class IntervalSet implements IntSet {
-	public static final IntervalSet COMPLETE_CHAR_SET = IntervalSet.of(Lexer.MIN_CHAR_VALUE, Lexer.MAX_CHAR_VALUE);
-	static {
-		COMPLETE_CHAR_SET.setReadonly(true);
-	}
+
 
 	public static final IntervalSet EMPTY_SET = new IntervalSet();
 	static {
@@ -559,11 +556,7 @@ public class IntervalSet implements IntSet {
         }
     }
 
-    public boolean isReadonly() {
-        return readonly;
-    }
-
-    public void setReadonly(boolean readonly) {
+	public void setReadonly(boolean readonly) {
         if ( this.readonly && !readonly ) throw new IllegalStateException("can't alter readonly IntervalSet");
         this.readonly = readonly;
     }

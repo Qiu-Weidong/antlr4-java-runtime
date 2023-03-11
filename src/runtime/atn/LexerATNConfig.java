@@ -3,7 +3,6 @@
 package runtime.atn;
 
 import runtime.misc.MurmurHash;
-import runtime.misc.ObjectEqualityComparator;
 
 public class LexerATNConfig extends ATNConfig {
 	
@@ -77,9 +76,14 @@ public class LexerATNConfig extends ATNConfig {
 			return false;
 		}
 
-		if (!ObjectEqualityComparator.INSTANCE.equals(lexerActionExecutor, lexerOther.lexerActionExecutor)) {
+		if (!(lexerOther.lexerActionExecutor == null && lexerActionExecutor==null || lexerActionExecutor.equals(lexerOther.lexerActionExecutor)))
+		{
 			return false;
 		}
+
+//		if (!ObjectEqualityComparator.INSTANCE.equals(lexerActionExecutor, lexerOther.lexerActionExecutor)) {
+//			return false;
+//		}
 
 		return super.equals(other);
 	}

@@ -9,10 +9,7 @@ public class DecisionEventInfo {
 	
 	public final int decision;
 
-	
-	public final ATNConfigSet configs;
 
-	
 	public final TokenStream input;
 
 	
@@ -34,6 +31,5 @@ public class DecisionEventInfo {
 		this.stopIndex = stopIndex;
 		this.input = input;
 		this.startIndex = startIndex;
-		this.configs = configs;
 	}
 }

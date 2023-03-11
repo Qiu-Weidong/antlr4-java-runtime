@@ -227,7 +227,7 @@ public class LexerATNSimulator extends ATNSimulator {
 	
 
 	protected DFAState computeTargetState(CharStream input, DFAState s, int t) {
-		ATNConfigSet reach = new OrderedATNConfigSet();
+		ATNConfigSet reach = new ATNConfigSet();
 
 
 
@@ -263,7 +263,7 @@ public class LexerATNSimulator extends ATNSimulator {
 				return Token.EOF;
 			}
 
-			throw new LexerNoViableAltException(recog, input, startIndex, reach);
+			throw new LexerNoViableAltException(recog, input, startIndex);
 		}
 	}
 
@@ -335,7 +335,7 @@ public class LexerATNSimulator extends ATNSimulator {
 											 ATNState p)
 	{
 		PredictionContext initialContext = EmptyPredictionContext.Instance;
-		ATNConfigSet configs = new OrderedATNConfigSet();
+		ATNConfigSet configs = new ATNConfigSet();
 		for (int i=0; i<p.getNumberOfTransitions(); i++) {
 			ATNState target = p.get_transition(i).target;
 			LexerATNConfig c = new LexerATNConfig(target, i+1, initialContext);
@@ -586,7 +586,7 @@ public class LexerATNSimulator extends ATNSimulator {
 			DFAState newState = proposed;
 
 			newState.stateNumber = dfa.states.size();
-			configs.setReadonly(true);
+//			configs.setReadonly(true);
 			newState.configs = configs;
 			dfa.states.put(newState, newState);
 			return newState;

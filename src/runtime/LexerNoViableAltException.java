@@ -12,26 +12,18 @@ public class LexerNoViableAltException extends RecognitionException {
 	
 	private final int startIndex;
 
-	
-	private final ATNConfigSet deadEndConfigs;
 
 	public LexerNoViableAltException(Lexer lexer,
 									 CharStream input,
-									 int startIndex,
-									 ATNConfigSet deadEndConfigs) {
+									 int startIndex) {
 		super(lexer, input, null);
 		this.startIndex = startIndex;
-		this.deadEndConfigs = deadEndConfigs;
 	}
 
 	public int getStartIndex() {
 		return startIndex;
 	}
 
-
-	public ATNConfigSet getDeadEndConfigs() {
-		return deadEndConfigs;
-	}
 
 	@Override
 	public CharStream getInputStream() {

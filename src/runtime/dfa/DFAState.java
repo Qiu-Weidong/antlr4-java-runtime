@@ -17,7 +17,7 @@ public class DFAState {
 	public int stateNumber = -1;
 
 
-	public ATNConfigSet configs = new ATNConfigSet();
+	public ATNConfigSet configs;
 
 	
 
